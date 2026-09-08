@@ -1,0 +1,81 @@
+nina-organiza/
+│
+── app/
+│   ├── __init__.py                    # Factory do app Flask
+│   ├── models.py                      # Modelos SQLAlchemy (Tutor, Pet, Atendimento, Gasto)
+│   │
+│   ├── routes/
+│   │   ├── __init__.py                # Registro de Blueprints
+│   │   ├── tutor.py                   # CRUD Tutores (AC1)
+│   │   ├── pet.py                     # CRUD Pets (AC1)
+│   │   ├── atendimento.py             # CRUD Atendimentos (AC2)
+│   │   ├── gasto.py                   # CRUD Gastos (AC3)
+│   │   └── dashboard.py               # Relatório Financeiro (Prova)
+│   │
+│   ├── templates/
+│   │   ├── base.html                  # Layout base (navbar, sidebar, footer)
+│   │   ├── index.html                 # Home/Dashboard inicial
+│   │   │
+│   │   ├── tutores/
+│   │   │   ├── list.html              # Lista Tutores
+│   │   │   ├── create.html            # Cadastro Tutor
+│   │   │   └── edit.html              # Edição Tutor
+│   │   │
+│   │   ├── pets/
+│   │   │   ├── list.html              # Lista Pets
+│   │   │   ├── create.html            # Cadastro Pet
+│   │   │   └── edit.html              # Edição Pet
+│   │   │
+│   │   ├── atendimentos/
+│   │   │   ├── list.html              # Lista Atendimentos (AC2)
+│   │   │   └── create.html            # Cadastro Atendimento (AC2)
+│   │   │
+│   │   ├── gastos/
+│   │   │   ├── list.html              # Lista Gastos (AC3)
+│   │   │   ── create.html            # Cadastro Gasto (AC3)
+│   │   │
+│   │   └── dashboard/
+│   │       └── index.html             # Relatório Financeiro (Prova)
+│   │
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── style.css              # Estilos customizados
+│   │   ├── js/
+│   │   │   └── main.js                # Scripts JavaScript
+│   │   └── uploads/                   # Fotos dos pets (upload)
+│   │       └── .gitkeep
+│   │
+│   └── forms.py                       # Formulários WTForms (opcional, mas recomendado)
+│
+├── migrations/                        # Flask-Migrate (Alembic) - migrations do banco
+│   ├── versions/
+│   ├── env.py
+│   └── script.py.mako
+│
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py                    # Configurações e fixtures
+│   ├── test_tutor.py                  # Testes de Tutores
+│   └── test_pet.py                    # Testes de Pets
+│
+├── docker/                            # Configurações Docker
+│   ├── Dockerfile                     # Imagem do app Flask
+│   ├── docker-compose.yml             # Orquestração (app + postgres)
+│   └── .dockerignore                  # Arquivos ignorados no build Docker
+│
+├── docs/                              # Documentação (diagramas da prova)
+│   ├── diagrama_casos_uso.png         # Diagrama de Casos de Uso
+│   ├── diagrama_classes.png           # Diagrama de Classes
+│   └── README.md                      # Documentação adicional
+│
+├── scripts/                           # Scripts úteis
+│   ├── init_db.py                     # Inicializa o banco de dados
+│   └── seed_data.py                   # Popula o banco com dados de teste
+│
+├── .env                               # Variáveis de ambiente (NÃO commitar)
+├── .env.example                       # Exemplo de variáveis (commitar)
+├── .gitignore                         # Arquivos ignorados pelo Git
+├── config.py                          # Configurações do Flask (dev, test, prod)
+├── requirements.txt                   # Dependências Python
+├── run.py                             # Entry point (executa o app)
+── README.md                          # Documentação principal do projeto
