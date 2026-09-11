@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ pet.nome }} - NinaOrganiza{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full pb-space-3xl">
+    <!-- Top Navigation -->
+    <div class="flex flex-wrap items-center justify-between gap-space-md py-space-md">
+        <div class="flex items-center gap-space-xs text-[12px] font-semibold">
+            <a href="{{ url_for('pet.list_pets') }}" class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-space-2xs">
+                <span class="material-symbols-outlined text-[18px]">pets</span>
+                <span>Pets</span>
+            </a>
+            <span class="text-outline-variant">/</span>
+            <span class="text-on-surface-variant">Ficha Clínica & Estética</span>
+            <span class="text-outline-variant">/</span>
+            <span class="text-primary font-bold">{{ pet.nome }}</span>
+        </div>
+        <div class="flex items-center gap-space-sm">
+            <a href="{{ url_for('pet.list_pets') }}" class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-lowest text-on-surface text-[12px] font-semibold border border-[#EFE7DD] hover:bg-surface-container-low transition-all shadow-xs">
+                <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                <span>Voltar para Pets</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero Profile -->
+    <div class="relative w-full rounded-2xl bg-surface-container-lowest p-space-xl border border-[#EFE7DD] shadow-[0_2px_12px_-2px_rgba(43,30,22,0.04)] overflow-hidden mb-space-xl">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-lg">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-space-lg">
+                <div class="relative flex-shrink-0">
+                    <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-secondary-fixed/50 p-1 shadow-md ring-2 ring-nina-caramel-bright/40 flex items-center justify-center overflow-hidden">
+                        <div class="w-full h-full bg-surface-container-high flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[60px] text-outline">pets</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-space-xs">
+                    <div class="flex flex-wrap items-center gap-space-sm">
+                        <h1 class="text-[32px] font-bold text-nina-espresso-dark tracking-tight">{{ pet.nome }}</h1>
+                        {% if pet.data_nascimento %}
+                        <span class="inline-flex items-center px-space-sm py-0.5 rounded-full bg-primary-fixed text-primary text-[11px] font-bold">{{ pet.data_nascimento.strftime('%Y') }} nasc.</span>
+                        {% endif %}
+                        {% if pet.porte %}
+                        <span class="inline-flex items-center px-space-sm py-0.5 rounded-full bg-secondary-fixed text-nina-espresso-mid text-[11px] font-semibold">Porte {{ pet.porte|capitalize }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="flex items-center gap-space-xs text-on-surface-variant text-[14px] pt-space-2xs">
+                        <span class="material-symbols-outlined text-[18px] text-nina-caramel-deep">person</span>
+                        <span class="text-on-surface-variant">Tutor:</span>
+                        <a href="{{ url_for('tutor.tutor_profile', tutor_id=pet.tutor.id) }}" class="font-bold text-primary hover:text-nina-caramel-deep underline decoration-nina-caramel-bright/40 underline-offset-2 transition-colors">
+                            {{ pet.tutor.nome }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a href="{{ url_for('pet.edit_pet', pet_id=pet.id) }}" class="inline-flex items-center justify-center gap-space-xs h-11 px-space-lg rounded-xl bg-surface-container-low text-nina-espresso-dark border border-[#EFE7DD] text-[14px] hover:bg-surface-container-high transition-all shadow-xs font-semibold">
+                    <span class="material-symbols-outlined text-[18px] text-nina-caramel-deep">edit</span>
+                    <span>Editar Pet</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex flex-col gap-space-xl">
+        <!-- Informações Básicas -->
+        <div class="rounded-2xl bg-surface-container-lowest p-space-xl border border-[#EFE7DD] shadow-[0_2px_12px_-2px_rgba(43,30,22,0.03)] flex flex-col gap-space-lg">
+            <div class="flex items-center gap-space-sm border-b border-[#F2ECE1] pb-space-md">
+                <div class="w-8 h-8 rounded-lg bg-secondary-fixed flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[20px]">info</span>
+                </div>
+                <h2 class="text-[20px] font-bold text-nina-espresso-dark">Informações Básicas</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-space-md">
+                <div class="p-space-md rounded-xl bg-surface-container-low border border-[#EFE7DD] flex flex-col gap-1">
+                    <span class="text-[12px] text-on-surface-variant">Raça</span>
+                    <span class="text-[16px] text-nina-espresso-dark font-bold">{{ pet.raca or 'Não informada' }}</span>
+                </div>
+                <div class="p-space-md rounded-xl bg-surface-container-low border border-[#EFE7DD] flex flex-col gap-1">
+                    <span class="text-[12px] text-on-surface-variant">Data de nascimento</span>
+                    <span class="text-[16px] text-nina-espresso-dark font-bold">{{ pet.data_nascimento.strftime('%d/%m/%Y') if pet.data_nascimento else 'Não informada' }}</span>
+                </div>
+                <div class="p-space-md rounded-xl bg-surface-container-low border border-[#EFE7DD] flex flex-col gap-1">
+                    <span class="text-[12px] text-on-surface-variant">Sexo</span>
+                    <span class="text-[16px] text-nina-espresso-dark font-bold">{{ pet.sexo|capitalize if pet.sexo else 'Não informado' }}</span>
+                </div>
+                <div class="p-space-md rounded-xl bg-surface-container-low border border-[#EFE7DD] flex flex-col gap-1">
+                    <span class="text-[12px] text-on-surface-variant">Porte</span>
+                    <span class="text-[16px] text-nina-espresso-dark font-bold">{{ pet.porte|capitalize if pet.porte else 'Não informado' }}</span>
+                </div>
+            </div>
+            {% if pet.observacoes %}
+            <div class="p-space-md rounded-xl bg-surface-container-low border border-[#EFE7DD] flex flex-col gap-space-xs">
+                <span class="text-[12px] text-nina-espresso-dark font-bold flex items-center gap-space-2xs">
+                    <span class="material-symbols-outlined text-[18px] text-nina-caramel-deep">notes</span>
+                    Observações / Cuidados
+                </span>
+                <p class="text-[14px] text-on-surface-variant leading-relaxed">{{ pet.observacoes }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Histórico de Atendimentos (Placeholder) -->
+        <div class="rounded-2xl bg-surface-container-lowest p-space-xl border border-[#EFE7DD] shadow-[0_2px_12px_-2px_rgba(43,30,22,0.03)] flex flex-col gap-space-lg">
+            <div class="flex items-center gap-space-sm border-b border-[#F2ECE1] pb-space-md">
+                <div class="w-8 h-8 rounded-lg bg-secondary-fixed flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[20px]">history</span>
+                </div>
+                <h2 class="text-[20px] font-bold text-nina-espresso-dark">Histórico de Atendimentos</h2>
+            </div>
+            <div class="py-space-2xl px-space-lg rounded-xl bg-surface-container-low/50 border border-dashed border-[#EFE7DD] flex flex-col items-center justify-center text-center">
+                <div class="w-16 h-16 rounded-full bg-secondary-container/50 flex items-center justify-center text-nina-caramel-deep mb-space-md">
+                    <span class="material-symbols-outlined text-[32px]">pets</span>
+                </div>
+                <h3 class="text-[16px] text-nina-espresso-dark font-bold mb-1">Nenhum atendimento registrado ainda</h3>
+                <p class="text-[12px] text-on-surface-variant max-w-md">
+                    Esta funcionalidade estará disponível em breve para você acompanhar todos os banhos, tosas e tratamentos do {{ pet.nome }}.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

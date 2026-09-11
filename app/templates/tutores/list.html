@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block title %}Tutores - NinaOrganiza{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full pb-space-3xl">
+    <div class="py-space-xl flex flex-col gap-space-xl">
+        <!-- Header -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
+            <div class="flex flex-col gap-space-2xs">
+                <div class="flex items-center gap-space-xs">
+                    <span class="px-space-sm py-0.5 rounded-full bg-secondary-container text-primary text-[11px] font-bold tracking-wide uppercase">
+                        Diretório de Clientes
+                    </span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-nina-caramel-bright"></span>
+                    <span class="text-[13px] text-on-surface-variant font-medium">Gestão Operacional</span>
+                </div>
+                <h1 class="text-[32px] font-bold text-nina-espresso-dark tracking-tight">Tutores</h1>
+                <p class="text-[14px] text-on-surface-variant">Gerencie seus clientes e seus respectivos pets em um só lugar com histórico e contato ágil.</p>
+            </div>
+            <div class="flex items-center gap-space-sm self-start lg:self-auto">
+                <a href="{{ url_for('tutor.create_tutor') }}" class="h-12 px-space-lg rounded-xl bg-primary text-white hover:bg-nina-caramel-deep transition-all duration-200 flex items-center gap-space-xs shadow-[0_8px_20px_-4px_rgba(141,75,0,0.35)] active:scale-[0.98] text-[14px] font-semibold">
+                    <span class="material-symbols-outlined text-[20px]">add</span>
+                    <span>+ Novo Tutor</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+            <div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm border border-surface-container flex items-center justify-between">
+                <div class="flex flex-col gap-space-2xs">
+                    <span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Total de Tutores</span>
+                    <span class="text-[40px] text-nina-espresso-dark font-extrabold">{{ tutores|length }}</span>
+                    <span class="text-[12px] text-outline">Base ativa cadastrada</span>
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-primary-fixed flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[28px]">group</span>
+                </div>
+            </div>
+            <div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm border border-surface-container flex items-center justify-between">
+                <div class="flex flex-col gap-space-2xs">
+                    <span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Total de Pets</span>
+                    <span class="text-[40px] text-nina-espresso-dark font-extrabold">{{ total_pets }}</span>
+                    <span class="text-[12px] text-outline">Pets vinculados aos tutores</span>
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-tertiary-fixed flex items-center justify-center text-tertiary">
+                    <span class="material-symbols-outlined text-[28px]">pets</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-space-lg">
+            {% for tutor in tutores %}
+            <div class="group relative flex flex-col justify-between rounded-2xl bg-surface-container-lowest p-space-lg border border-surface-container shadow-sm hover:shadow-md hover:border-primary-fixed-dim transition-all duration-200">
+                <div class="flex flex-col gap-space-md">
+                    <!-- Card Header -->
+                    <div class="flex items-start justify-between gap-space-xs">
+                        <div class="flex items-center gap-space-sm">
+                            <div class="w-12 h-12 rounded-2xl bg-primary-fixed flex items-center justify-center text-primary text-[18px] font-bold shadow-xs">
+                                {{ tutor.nome[:2].upper() }}
+                            </div>
+                            <div class="flex flex-col">
+                                <a href="{{ url_for('tutor.tutor_profile', tutor_id=tutor.id) }}" class="text-[16px] text-nina-espresso-dark font-bold group-hover:text-primary transition-colors">
+                                    {{ tutor.nome }}
+                                </a>
+                                <span class="text-[12px] text-outline">Cliente desde {{ tutor.data_cadastro.strftime('%b/%Y') if tutor.data_cadastro else 'N/A' }}</span>
+                            </div>
+                        </div>
+                        <span class="px-space-sm py-0.5 rounded-full bg-secondary-container text-primary text-[11px] font-bold flex items-center gap-1">
+                            🐾 {{ tutor.pets|length }} {{ 'Pet' if tutor.pets|length == 1 else 'Pets' }}
+                        </span>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="flex flex-col gap-space-xs py-space-xs rounded-xl bg-surface-container-low px-space-sm border border-surface-container/60">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-space-2xs text-[13px] text-on-surface font-medium">
+                                <span class="material-symbols-outlined text-[18px] text-primary">call</span>
+                                <span>{{ tutor.telefone }}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-space-2xs text-[12px] text-on-surface-variant">
+                            <span class="material-symbols-outlined text-[18px] text-outline">location_on</span>
+                            <span class="truncate">{{ tutor.endereco or 'Endereço não informado' }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Pets -->
+                    <div class="flex flex-col gap-space-2xs">
+                        <span class="text-[11px] text-outline uppercase tracking-wider font-bold">Pets Vinculados</span>
+                        <div class="flex flex-wrap gap-space-2xs">
+                            {% for pet in tutor.pets %}
+                            <span class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container text-nina-espresso-mid text-[12px] font-medium">
+                                <span class="w-2 h-2 rounded-full bg-primary"></span>
+                                <span>{{ pet.nome }} <span class="text-on-surface-variant">({{ pet.raca or 'SRD' }})</span></span>
+                            </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="mt-space-md pt-space-sm border-t border-surface-container/60 flex items-center justify-between bg-surface-container-lowest">
+                    <a href="{{ url_for('tutor.tutor_profile', tutor_id=tutor.id) }}" class="flex items-center gap-space-2xs text-primary text-[13px] font-bold hover:underline">
+                        <span>Ver Detalhes</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                    <div class="flex items-center gap-1">
+                        <a href="{{ url_for('tutor.edit_tutor', tutor_id=tutor.id) }}" class="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface-variant flex items-center justify-center transition-colors" title="Editar Tutor">
+                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- Quick Add Card -->
+            <a href="{{ url_for('tutor.create_tutor') }}" class="relative flex flex-col items-center justify-center rounded-2xl bg-surface-container-low border-2 border-dashed border-outline-variant p-space-xl text-center hover:bg-surface-container hover:border-primary transition-all cursor-pointer group shadow-sm">
+                <div class="w-16 h-16 rounded-full bg-surface-container-lowest border border-surface-container flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all shadow-sm mb-space-sm">
+                    <span class="material-symbols-outlined text-[32px]">person_add</span>
+                </div>
+                <span class="text-[20px] text-nina-espresso-dark font-bold">Cadastrar Novo Tutor</span>
+                <p class="text-[13px] text-on-surface-variant mt-1 max-w-xs">
+                    Adicione rapidamente o cliente, número de telefone e já vincule o primeiro pet.
+                </p>
+            </a>
+        </div>
+
+        <!-- Empty State -->
+        {% if tutores|length == 0 %}
+        <div class="flex flex-col items-center justify-center py-space-3xl px-space-lg text-center rounded-2xl bg-surface-container-lowest border border-surface-container shadow-sm">
+            <div class="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center text-outline mb-space-md">
+                <span class="material-symbols-outlined text-[36px]">search_off</span>
+            </div>
+            <h3 class="text-[20px] text-nina-espresso-dark font-bold">Nenhum tutor cadastrado</h3>
+            <p class="text-[14px] text-on-surface-variant max-w-md mt-1">
+                Comece cadastrando seu primeiro tutor para organizar sua carteira de clientes.
+            </p>
+            <a href="{{ url_for('tutor.create_tutor') }}" class="mt-space-lg px-space-lg py-space-sm rounded-xl bg-primary text-white text-[13px] font-bold hover:bg-nina-caramel-deep transition-colors">
+                Cadastrar Primeiro Tutor
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

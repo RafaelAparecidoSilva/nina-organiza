@@ -1,0 +1,102 @@
+# ==========================================
+# Python
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ==========================================
+# Ambientes Virtuais (Python)
+# ==========================================
+venv/
+env/
+ENV/
+.venv
+
+# ==========================================
+# Variáveis de Ambiente (Segurança)
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.txt
+
+# ==========================================
+# Flask e Banco de Dados Local
+# ==========================================
+instance/
+.webassets-cache
+*.db
+*.sqlite
+*.sqlite3
+
+# ==========================================
+# IDEs e Editores de Código
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ==========================================
+# Sistemas Operacionais
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ==========================================
+# Testes e Cobertura
+# ==========================================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+
+# ==========================================
+# Logs
+# ==========================================
+*.log
+
+# ==========================================
+# Específico do Projeto NinaOrganiza
+# ==========================================
+# Ignora arquivos de upload de fotos (mantém a pasta vazia no Git)
+app/static/uploads/*
+!app/static/uploads/.gitkeep
+
+# Ignora arquivos de migração gerados localmente se não quiser versionar o histórico do Alembic
+# (Opcional: Se quiser versionar as migrations do banco para o professor, remova as 2 linhas abaixo)
+# migrations/versions/*.py
+# !migrations/versions/.gitkeep

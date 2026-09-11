@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ tutor.nome }} - NinaOrganiza{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full pb-space-3xl">
+    <!-- Navigation -->
+    <div class="flex items-center justify-between py-space-md">
+        <div class="flex items-center gap-space-xs text-[13px] text-on-surface-variant font-semibold">
+            <a href="{{ url_for('tutor.list_tutores') }}" class="flex items-center gap-space-2xs text-primary hover:text-nina-caramel-deep transition-colors">
+                <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                <span>Tutores</span>
+            </a>
+            <span class="text-outline-variant">/</span>
+            <span class="text-on-surface font-bold">{{ tutor.nome }}</span>
+        </div>
+        <div class="flex items-center gap-space-sm">
+            <a href="{{ url_for('tutor.edit_tutor', tutor_id=tutor.id) }}" class="flex items-center gap-space-2xs px-space-md py-space-xs rounded-xl bg-surface-container-lowest hover:bg-surface-container border border-[#EFE7DD] text-on-surface text-[12px] font-semibold shadow-sm transition-all">
+                <span class="material-symbols-outlined text-[18px] text-primary">edit</span>
+                <span>Editar Cadastro</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="w-full bg-surface-container-lowest rounded-2xl p-space-xl border border-[#EFE7DD] shadow-[0_2px_12px_-2px_rgba(43,30,22,0.05)] relative overflow-hidden mb-space-xl">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-space-xl relative z-10">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-space-lg">
+                <div class="relative">
+                    <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-nina-caramel-deep text-white text-[32px] font-extrabold flex items-center justify-center shadow-[0_6px_16px_rgba(200,122,50,0.3)]">
+                        {{ tutor.nome[:2].upper() }}
+                    </div>
+                </div>
+                <div class="flex flex-col gap-space-2xs">
+                    <div class="flex flex-wrap items-center gap-space-xs">
+                        <h1 class="text-[24px] text-on-surface font-bold">{{ tutor.nome }}</h1>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-x-space-lg gap-y-space-2xs text-[13px] text-on-surface-variant mt-space-2xs">
+                        <div class="flex items-center gap-space-2xs">
+                            <span class="material-symbols-outlined text-outline text-[18px]">call</span>
+                            <span>{{ tutor.telefone }}</span>
+                        </div>
+                        {% if tutor.email %}
+                        <div class="flex items-center gap-space-2xs">
+                            <span class="material-symbols-outlined text-outline text-[18px]">mail</span>
+                            <span>{{ tutor.email }}</span>
+                        </div>
+                        {% endif %}
+                        {% if tutor.endereco %}
+                        <div class="flex items-center gap-space-2xs">
+                            <span class="material-symbols-outlined text-outline text-[18px]">location_on</span>
+                            <span>{{ tutor.endereco }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md mt-space-xl pt-space-lg border-t-0 bg-surface-container-low border border-[#EFE7DD] rounded-xl p-space-md">
+            <div class="flex items-center gap-space-sm px-space-xs">
+                <div class="w-10 h-10 rounded-xl bg-surface-container-lowest text-primary flex items-center justify-center shadow-sm border border-[#EFE7DD]">
+                    <span class="material-symbols-outlined text-[22px]">pets</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-[20px] text-on-surface font-bold">{{ tutor.pets|length }}</span>
+                    <span class="text-[11px] text-on-surface-variant uppercase tracking-wider font-bold">Pets Cadastrados</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pets Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl">
+        <div class="lg:col-span-8 flex flex-col gap-space-lg">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-primary text-[24px]">sound_detection_dog_barking</span>
+                    <h2 class="text-[20px] text-on-surface font-bold">Pets vinculados a este tutor</h2>
+                    <span class="px-space-xs py-0.5 rounded-full bg-[#fdecdb] text-primary text-[11px] font-bold border border-[#f3d9b5]">{{ tutor.pets|length }}</span>
+                </div>
+                <a href="{{ url_for('pet.create_pet') }}" class="inline-flex items-center gap-space-2xs px-space-md py-space-xs rounded-xl bg-primary text-white text-[12px] font-bold hover:bg-nina-caramel-deep transition-all shadow-[0_2px_8px_rgba(200,122,50,0.22)]">
+                    <span class="material-symbols-outlined text-[18px]">add</span>
+                    <span>+ Adicionar Novo Pet</span>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+                {% for pet in tutor.pets %}
+                <div class="bg-surface-container-lowest rounded-2xl p-space-lg border border-[#EFE7DD] shadow-[0_2px_8px_-2px_rgba(43,30,22,0.04)] hover:shadow-[0_8px_24px_-4px_rgba(200,122,50,0.15)] transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-start gap-space-md">
+                            <div class="relative w-20 h-24 rounded-xl overflow-hidden bg-surface-container-high flex-shrink-0">
+                                <div class="w-full h-full bg-surface-container flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-[40px] text-outline">pets</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col min-w-0 flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-[16px] text-on-surface font-bold truncate">{{ pet.nome }}</h3>
+                                </div>
+                                <p class="text-[12px] text-on-surface-variant truncate">{{ pet.raca or 'SRD' }}</p>
+                                <div class="flex items-center gap-space-xs text-outline text-[12px] mt-1 font-semibold">
+                                    {% if pet.data_nascimento %}
+                                    <span>{{ pet.data_nascimento.strftime('%Y') }} nasc.</span>
+                                    {% endif %}
+                                    {% if pet.sexo %}
+                                    <span>•</span>
+                                    <span>{{ pet.sexo|capitalize }}</span>
+                                    {% endif %}
+                                    {% if pet.porte %}
+                                    <span>•</span>
+                                    <span>Porte {{ pet.porte|capitalize }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-space-lg pt-space-sm flex items-center justify-between border-t border-[#EFE7DD]/70">
+                        <a href="{{ url_for('pet.pet_profile', pet_id=pet.id) }}" class="flex items-center gap-1 px-space-md py-space-xs rounded-xl bg-surface-container-low hover:bg-[#faedd9] text-primary text-[12px] font-bold border border-[#EFE7DD] transition-colors">
+                            <span>Ver Ficha do Pet</span>
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Histórico de Atendimentos (Placeholder) -->
+            <div class="bg-surface-container-lowest rounded-2xl p-space-lg border border-[#EFE7DD] shadow-[0_2px_8px_-2px_rgba(43,30,22,0.04)] mt-space-sm">
+                <div class="flex items-center justify-between mb-space-md">
+                    <div class="flex items-center gap-space-xs">
+                        <span class="material-symbols-outlined text-primary text-[20px]">calendar_today</span>
+                        <h3 class="text-[16px] text-on-surface font-bold">Histórico Recente de Atendimentos</h3>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center text-center p-space-xl rounded-xl bg-surface-container-low border border-[#EFE7DD]">
+                    <span class="material-symbols-outlined text-outline text-[32px] mb-space-xs">event_busy</span>
+                    <p class="text-[14px] text-on-surface-variant font-semibold">Nenhum atendimento registrado ainda.</p>
+                    <p class="text-[12px] text-outline mt-0.5">Os atendimentos serão registrados na próxima fase do sistema.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Observações -->
+        <div class="lg:col-span-4 flex flex-col gap-space-lg">
+            <div class="bg-surface-container-lowest rounded-2xl p-space-lg border border-[#EFE7DD] shadow-[0_2px_8px_-2px_rgba(43,30,22,0.04)] flex flex-col gap-space-md">
+                <div class="flex items-center justify-between border-b border-[#EFE7DD]/60 pb-space-sm">
+                    <div class="flex items-center gap-space-xs">
+                        <span class="material-symbols-outlined text-primary text-[22px]">sticky_note_2</span>
+                        <h3 class="text-[16px] text-on-surface font-bold">Observações do Tutor</h3>
+                    </div>
+                </div>
+                <div class="p-space-md rounded-xl bg-surface-container-low border border-[#EFE7DD] text-on-surface-variant">
+                    {% if tutor.observacoes %}
+                    <p class="text-[13px] leading-relaxed">{{ tutor.observacoes }}</p>
+                    {% else %}
+                    <p class="text-[13px] leading-relaxed text-outline">Nenhuma observação registrada.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

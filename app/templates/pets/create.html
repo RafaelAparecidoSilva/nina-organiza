@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block title %}Novo Pet - NinaOrganiza{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full pb-space-3xl">
+    <!-- Top Navigation -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md py-space-lg">
+        <div class="flex flex-col gap-space-2xs">
+            <nav class="flex items-center gap-space-xs text-[12px] font-semibold text-[#867466]">
+                <a href="{{ url_for('pet.list_pets') }}" class="hover:text-primary transition-colors flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]">pets</span>
+                    Pets
+                </a>
+                <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                <span class="text-primary">Cadastrar Pet</span>
+            </nav>
+            <div class="flex items-baseline gap-space-sm mt-1">
+                <h1 class="text-[32px] font-bold text-[#2B1E16] tracking-tight">Novo Pet</h1>
+                <span class="text-[12px] text-[#867466] px-space-xs py-0.5 rounded-full bg-[#F8F4EE] border border-[#EAE2D7] font-medium">Ficha Cadastral</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-space-sm">
+            <a href="{{ url_for('pet.list_pets') }}" class="inline-flex items-center gap-space-xs px-space-md py-2.5 rounded-xl bg-white border border-[#EAE2D7] hover:bg-[#F8F4EE] text-[#54433a] text-[12px] font-semibold transition-all shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                Voltar à lista
+            </a>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <form method="POST" class="max-w-4xl mx-auto w-full flex flex-col gap-space-xl">
+        {{ form.hidden_tag() }}
+        
+        <!-- Seção 1: Identificação -->
+        <section class="bg-white rounded-2xl p-space-xl border border-[#EAE2D7] shadow-sm flex flex-col gap-space-lg relative overflow-hidden">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-space-sm">
+                    <div class="w-10 h-10 rounded-xl bg-[#ffdcc3] flex items-center justify-center text-[#C87A32]">
+                        <span class="material-symbols-outlined text-[22px]">badge</span>
+                    </div>
+                    <div>
+                        <h2 class="text-[20px] text-[#2B1E16] font-bold">1. Identificação do Pet</h2>
+                        <p class="text-[13px] text-[#54433a]">Dados básicos e características físicas para a rotina de banho & tosa</p>
+                    </div>
+                </div>
+                <span class="text-[11px] text-[#C87A32] bg-[#ffdcc3]/60 px-space-sm py-1 rounded-full uppercase tracking-wider font-bold border border-[#EAE2D7]">Obrigatório</span>
+            </div>
+
+            <div class="flex flex-col gap-space-md">
+                <div>
+                    <label class="block text-[13px] text-[#2B1E16] font-semibold mb-1">
+                        Nome do Pet <span class="text-[#ba1a1a]">*</span>
+                    </label>
+                    {{ form.nome(class="w-full px-space-md py-3 rounded-xl bg-[#F8F4EE] border border-[#EAE2D7] text-[#2B1E16] text-[14px] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C87A32]/30 focus:border-[#C87A32] transition-all placeholder:text-[#867466]/70", placeholder="Ex: Nina, Thor, Luna...") }}
+                    {% if form.nome.errors %}
+                        <span class="text-[12px] text-error mt-1 block">{{ form.nome.errors[0] }}</span>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label class="block text-[13px] text-[#2B1E16] font-semibold mb-1">
+                        Tutor Responsável <span class="text-[#ba1a1a]">*</span>
+                    </label>
+                    {{ form.tutor_id(class="w-full px-space-md py-3 rounded-xl bg-[#F8F4EE] border border-[#EAE2D7] text-[#2B1E16] text-[14px] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C87A32]/30 focus:border-[#C87A32] transition-all cursor-pointer") }}
+                    {% if form.tutor_id.errors %}
+                        <span class="text-[12px] text-error mt-1 block">{{ form.tutor_id.errors[0] }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+                    <div>
+                        <label class="block text-[13px] text-[#2B1E16] font-semibold mb-1">Espécie</label>
+                        {{ form.especie(class="w-full px-space-md py-3 rounded-xl bg-[#F8F4EE] border border-[#EAE2D7] text-[#2B1E16] text-[14px] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C87A32]/30 focus:border-[#C87A32] transition-all cursor-pointer") }}
+                    </div>
+                    <div>
+                        <label class="block text-[13px] text-[#2B1E16] font-semibold mb-1">Sexo</label>
+                        {{ form.sexo(class="w-full px-space-md py-3 rounded-xl bg-[#F8F4EE] border border-[#EAE2D7] text-[#2B1E16] text-[14px] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C87A32]/30 focus:border-[#C87A32] transition-all cursor-pointer") }}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+                    <div>
+                        <label class="block text-[13px] text-[#2B1E16] font-semibold mb-1">Raça</label>
+                        {{ form.raca(class="w-full px-space-md py-3 rounded-xl bg-[#F8F4EE] border border-[#EAE2D7] text-[#2B1E16] text-[14px] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C87A32]/30 focus:border-[#C87A32] transition-all placeholder:text-[#867466]/70", placeholder="Ex: Shih Tzu, Golden Retriever, SRD...") }}
+                    </div>
+                    <div>
+                        <label class="block text-[13px] text-[#2B1E16] font-semibold mb-1">Data de Nascimento</label>
+                        {{ form.data_nascimento(class="w-full px-space-md py-3 rounded-xl bg-[#F8F4EE] border border-[#EAE2D7] text-[#2B1E16] text-[14px] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C87A32]/30 focus:border-[#C87A32] transition-all", type="date") }}
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[13px] text-[#2B1E16] font-semibold mb-1">Porte do Pet</label>
+                    {{ form.porte(class="w-full px-space-md py-3 rounded-xl bg-[#F8F4EE] border border-[#EAE2D7] text-[#2B1E16] text-[14px] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C87A32]/30 focus:border-[#C87A32] transition-all cursor-pointer") }}
+                </div>
+
+                <div>
+                    <label class="block text-[13px] text-[#2B1E16] font-semibold mb-1">Tipo de Pelagem</label>
+                    {{ form.pelagem(class="w-full px-space-md py-3 rounded-xl bg-[#F8F4EE] border border-[#EAE2D7] text-[#2B1E16] text-[14px] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C87A32]/30 focus:border-[#C87A32] transition-all cursor-pointer") }}
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 2: Observações -->
+        <section class="bg-white rounded-2xl p-space-xl border border-[#EAE2D7] shadow-sm flex flex-col gap-space-lg relative overflow-hidden">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-space-sm">
+                    <div class="w-10 h-10 rounded-xl bg-[#ffdcc3] flex items-center justify-center text-[#C87A32]">
+                        <span class="material-symbols-outlined text-[22px]">medical_services</span>
+                    </div>
+                    <div>
+                        <h2 class="text-[20px] text-[#2B1E16] font-bold">2. Observações e Cuidados Especiais</h2>
+                        <p class="text-[13px] text-[#54433a]">Restrições clínicas, histórico de saúde ou preferências de manejo</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-space-xs pt-space-xs">
+                <label class="text-[13px] text-[#2B1E16] font-semibold flex items-center justify-between">
+                    <span>Observações / Alergias</span>
+                    <span class="text-[12px] text-[#867466]">Opcional</span>
+                </label>
+                {{ form.observacoes(class="w-full p-space-md rounded-xl bg-[#F8F4EE] border border-[#EAE2D7] text-[#2B1E16] text-[14px] focus:bg-white focus:ring-2 focus:ring-[#C87A32]/30 focus:border-[#C87A32] focus:outline-none placeholder:text-[#867466]/70 shadow-sm resize-none", placeholder="Anote restrições, sensibilidade de pele, alergia a produtos, remédios em uso ou preferências para o banho e tosa...", rows="4") }}
+                {% if form.observacoes.errors %}
+                    <span class="text-[12px] text-error mt-1 block">{{ form.observacoes.errors[0] }}</span>
+                {% endif %}
+                <p class="text-[12px] text-[#867466]">Essas anotações ficam visíveis na ficha do pet e no histórico de atendimentos.</p>
+            </div>
+        </section>
+
+        <!-- Actions -->
+        <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-space-md pt-space-xs">
+            <div class="flex items-center gap-space-xs text-[#867466] text-[13px]">
+                <span class="material-symbols-outlined text-[18px]">lock</span>
+                Os dados ficam protegidos no seu painel NinaOrganiza
+            </div>
+            <div class="flex items-center gap-space-sm w-full sm:w-auto">
+                <a href="{{ url_for('pet.list_pets') }}" class="w-1/2 sm:w-auto px-space-xl py-3 rounded-xl bg-white border border-[#EAE2D7] hover:bg-[#F8F4EE] text-[#54433a] text-[14px] font-semibold transition-all shadow-sm">
+                    Cancelar
+                </a>
+                <button type="submit" class="w-1/2 sm:w-auto px-space-2xl py-3 rounded-xl bg-[#C87A32] hover:bg-[#B86720] text-white text-[14px] font-semibold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[20px]">save</span>
+                    Salvar Pet
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

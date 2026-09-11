@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Início - NinaOrganiza{% endblock %}
+
+{% block content %}
+<div class="flex flex-col items-center justify-center py-space-3xl">
+    <div class="text-center">
+        <h1 class="text-[48px] font-bold text-nina-espresso-dark mb-space-md">Bem-vindo ao NinaOrganiza</h1>
+        <p class="text-[20px] text-on-surface-variant mb-space-xl">Ela organiza, você cuida dos pets.</p>
+        <div class="flex gap-space-md justify-center">
+            <a href="{{ url_for('tutor.list_tutores') }}" class="px-space-xl py-space-md bg-primary text-white rounded-xl font-semibold hover:bg-nina-caramel-deep transition-all shadow-md">
+                Ver Tutores
+            </a>
+            <a href="{{ url_for('pet.list_pets') }}" class="px-space-xl py-space-md bg-surface-container-low text-on-surface rounded-xl font-semibold hover:bg-surface-container border border-[#EFE7DD] transition-all">
+                Ver Pets
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

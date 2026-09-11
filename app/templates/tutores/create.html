@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}Novo Tutor - NinaOrganiza{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full pb-space-3xl">
+    <!-- Top Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pt-space-lg mb-space-xl">
+        <div class="flex flex-col gap-space-2xs">
+            <nav class="flex items-center gap-space-xs text-on-surface-variant text-[11px] font-bold tracking-wider uppercase">
+                <a href="{{ url_for('tutor.list_tutores') }}" class="hover:text-primary transition-colors flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]">group</span>
+                    <span>Tutores</span>
+                </a>
+                <span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+                <span class="text-nina-caramel-deep">Cadastrar Novo</span>
+            </nav>
+            <div class="flex items-center gap-space-sm mt-space-2xs">
+                <h1 class="text-[32px] font-bold text-nina-espresso-dark">Novo Tutor</h1>
+            </div>
+        </div>
+        <div class="flex items-center gap-space-xs">
+            <a href="{{ url_for('tutor.list_tutores') }}" class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-lowest border border-[#EFE7DD] hover:bg-surface-container-low text-on-surface-variant hover:text-nina-espresso-dark transition-colors text-[13px] font-semibold shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                <span>Voltar para lista</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="w-full max-w-3xl mx-auto flex flex-col gap-space-lg">
+        <form method="POST" class="flex flex-col gap-space-xl">
+            {{ form.hidden_tag() }}
+            
+            <!-- Identificação e Contato -->
+            <div class="bg-surface-container-lowest rounded-2xl p-space-xl border border-[#EFE7DD] shadow-[0_2px_12px_-2px_rgba(43,30,22,0.04)] flex flex-col gap-space-lg">
+                <div class="flex items-center justify-between border-b border-[#F2ECE1] pb-space-md">
+                    <div class="flex items-center gap-space-sm">
+                        <div class="w-10 h-10 rounded-xl bg-secondary-container/60 flex items-center justify-center text-nina-caramel-deep">
+                            <span class="material-symbols-outlined text-[20px]">person</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <h2 class="text-[20px] font-bold text-nina-espresso-dark">Identificação e Contato</h2>
+                            <p class="text-[13px] text-on-surface-variant">Informações essenciais para localizar e conversar com o tutor</p>
+                        </div>
+                    </div>
+                    <span class="text-[11px] text-error bg-error-container/40 px-space-xs py-space-2xs rounded-md font-bold">* Obrigatórios</span>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+                    <div class="sm:col-span-2 flex flex-col gap-space-2xs">
+                        <label class="text-[13px] font-semibold text-nina-espresso-dark">
+                            Nome completo do tutor <span class="text-functional-terracotta font-bold">*</span>
+                        </label>
+                        {{ form.nome(class="w-full h-12 px-space-md rounded-xl bg-nina-cream-canvas text-nina-espresso-dark text-[14px] border border-[#EFE7DD] shadow-sm outline-none transition-all placeholder:text-outline/60 focus:bg-surface-container-lowest focus:border-nina-caramel-bright focus:ring-2 focus:ring-nina-caramel-bright/20", placeholder="Ex.: Mariana Fernandes de Souza") }}
+                        {% if form.nome.errors %}
+                            <span class="text-[12px] text-error">{{ form.nome.errors[0] }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="flex flex-col gap-space-2xs">
+                        <label class="text-[13px] font-semibold text-nina-espresso-dark">
+                            Telefone <span class="text-functional-terracotta font-bold">*</span>
+                        </label>
+                        {{ form.telefone(class="w-full h-12 px-space-md rounded-xl bg-nina-cream-canvas text-nina-espresso-dark text-[14px] border border-[#EFE7DD] shadow-sm outline-none transition-all placeholder:text-outline/60 focus:bg-surface-container-lowest focus:border-nina-caramel-bright focus:ring-2 focus:ring-nina-caramel-bright/20", placeholder="(11) 98765-4321", type="tel") }}
+                        {% if form.telefone.errors %}
+                            <span class="text-[12px] text-error">{{ form.telefone.errors[0] }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="flex flex-col gap-space-2xs">
+                        <label class="text-[13px] font-semibold text-nina-espresso-dark flex items-center justify-between">
+                            <span>E-mail</span>
+                            <span class="text-[11px] text-on-surface-variant font-normal">Opcional</span>
+                        </label>
+                        {{ form.email(class="w-full h-12 px-space-md rounded-xl bg-nina-cream-canvas text-nina-espresso-dark text-[14px] border border-[#EFE7DD] shadow-sm outline-none transition-all placeholder:text-outline/60 focus:bg-surface-container-lowest focus:border-nina-caramel-bright focus:ring-2 focus:ring-nina-caramel-bright/20", placeholder="mariana.souza@gmail.com") }}
+                        {% if form.email.errors %}
+                            <span class="text-[12px] text-error">{{ form.email.errors[0] }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Endereço -->
+            <div class="bg-surface-container-lowest rounded-2xl p-space-xl border border-[#EFE7DD] shadow-[0_2px_12px_-2px_rgba(43,30,22,0.04)] flex flex-col gap-space-lg">
+                <div class="flex items-center justify-between border-b border-[#F2ECE1] pb-space-md">
+                    <div class="flex items-center gap-space-sm">
+                        <div class="w-10 h-10 rounded-xl bg-secondary-container/60 flex items-center justify-center text-nina-caramel-deep">
+                            <span class="material-symbols-outlined text-[20px]">home_pin</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <h2 class="text-[20px] font-bold text-nina-espresso-dark">Endereço Residencial</h2>
+                            <p class="text-[13px] text-on-surface-variant">Útil para rotas de táxi dog, busca & entrega ou atendimento em domicílio</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col gap-space-2xs">
+                    <label class="text-[13px] font-semibold text-nina-espresso-dark">Endereço completo</label>
+                    {{ form.endereco(class="w-full p-space-md rounded-xl bg-nina-cream-canvas text-nina-espresso-dark text-[14px] border border-[#EFE7DD] shadow-sm outline-none transition-all placeholder:text-outline/60 focus:bg-surface-container-lowest focus:border-nina-caramel-bright focus:ring-2 focus:ring-nina-caramel-bright/20", placeholder="Rua, número, bairro, cidade - UF") }}
+                    {% if form.endereco.errors %}
+                        <span class="text-[12px] text-error">{{ form.endereco.errors[0] }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Observações -->
+            <div class="bg-surface-container-lowest rounded-2xl p-space-xl border border-[#EFE7DD] shadow-[0_2px_12px_-2px_rgba(43,30,22,0.04)] flex flex-col gap-space-lg">
+                <div class="flex items-center gap-space-sm border-b border-[#F2ECE1] pb-space-md">
+                    <div class="w-10 h-10 rounded-xl bg-secondary-container/60 flex items-center justify-center text-nina-caramel-deep">
+                        <span class="material-symbols-outlined text-[20px]">sticky_note_2</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-[20px] font-bold text-nina-espresso-dark">Preferências e Observações</h2>
+                        <p class="text-[13px] text-on-surface-variant">Anotações práticas para melhorar a experiência do cliente</p>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col gap-space-2xs">
+                    <label class="text-[13px] font-semibold text-nina-espresso-dark">
+                        Observações do Tutor <span class="text-[11px] text-on-surface-variant font-normal">(opcional)</span>
+                    </label>
+                    {{ form.observacoes(class="w-full p-space-md rounded-xl bg-nina-cream-canvas text-nina-espresso-dark text-[14px] border border-[#EFE7DD] shadow-sm outline-none transition-all placeholder:text-outline/60 focus:bg-surface-container-lowest focus:border-nina-caramel-bright focus:ring-2 focus:ring-nina-caramel-bright/20 resize-y", placeholder="Ex.: Prefere contato pela manhã; avisar 15min antes de chegar...", rows="3") }}
+                    {% if form.observacoes.errors %}
+                        <span class="text-[12px] text-error">{{ form.observacoes.errors[0] }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-space-md pt-space-xs">
+                <a href="{{ url_for('tutor.list_tutores') }}" class="w-full sm:w-auto px-space-xl py-3.5 rounded-xl bg-surface-container-low border border-[#EFE7DD] text-on-surface-variant hover:bg-surface-container hover:text-nina-espresso-dark text-[14px] font-semibold transition-all text-center">
+                    Cancelar
+                </a>
+                <button type="submit" class="w-full sm:w-auto px-space-2xl py-3.5 rounded-xl bg-primary hover:bg-nina-caramel-deep text-white text-[14px] font-bold flex items-center justify-center gap-space-xs transition-all duration-200 transform hover:scale-[1.01] shadow-[0_4px_16px_rgba(200,122,50,0.28)]">
+                    <span class="material-symbols-outlined text-[20px]">check_circle</span>
+                    <span>Salvar Tutor</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

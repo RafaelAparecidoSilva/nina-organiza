@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>{% block title %}NinaOrganiza{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#C87A32",
+                        "primary-container": "#ab631b",
+                        "primary-fixed": "#ffdcc3",
+                        "primary-fixed-dim": "#ffb77c",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#fffbff",
+                        "on-primary-fixed": "#2f1500",
+                        "on-primary-fixed-variant": "#6e3900",
+                        "secondary": "#6c5b51",
+                        "secondary-container": "#f3dbce",
+                        "secondary-fixed": "#f6ded1",
+                        "secondary-fixed-dim": "#d9c2b5",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#715f55",
+                        "on-secondary-fixed": "#251911",
+                        "on-secondary-fixed-variant": "#54433a",
+                        "tertiary": "#884a4b",
+                        "tertiary-container": "#a56263",
+                        "tertiary-fixed": "#ffdad9",
+                        "tertiary-fixed-dim": "#ffb3b3",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#fffbff",
+                        "on-tertiary-fixed": "#380b0f",
+                        "on-tertiary-fixed-variant": "#6f3637",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "background": "#fdf9f3",
+                        "on-background": "#2B1E16",
+                        "surface": "#fdf9f3",
+                        "surface-dim": "#ddd9d4",
+                        "surface-bright": "#fdf9f3",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f7f3ed",
+                        "surface-container": "#f1ede7",
+                        "surface-container-high": "#ebe8e2",
+                        "surface-container-highest": "#e6e2dc",
+                        "on-surface": "#2B1E16",
+                        "on-surface-variant": "#534438",
+                        "outline": "#867466",
+                        "outline-variant": "#EFE7DD",
+                        "inverse-surface": "#31302d",
+                        "inverse-on-surface": "#f4f0ea",
+                        "inverse-primary": "#ffb77c",
+                        "surface-tint": "#C87A32",
+                        "nina-ear-rose": "#E89B9B",
+                        "nina-ear-rose-deep": "#D97E88",
+                        "nina-ear-rose-light": "#F7D4D7",
+                        "nina-caramel-bright": "#D97E36",
+                        "nina-caramel-deep": "#B86720",
+                        "nina-espresso-mid": "#3B2A1E",
+                        "nina-espresso-dark": "#1F1610",
+                        "nina-cream-card": "#FFFFFF",
+                        "nina-cream-canvas": "#FFFBF5",
+                        "nina-cream-muted": "#F2ECE1",
+                        "nina-cream-surface": "#F8F4EE",
+                        "functional-terracotta": "#D05A3F",
+                        "functional-terracotta-light": "#FBEAE6",
+                        "functional-sage": "#3E8A5E",
+                        "functional-sage-light": "#E8F4EC"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        "space-xl": "2rem",
+                        "margin-mobile": "1rem",
+                        "space-sm": "0.75rem",
+                        "space-2xs": "0.25rem",
+                        "space-md": "1rem",
+                        "space-xs": "0.5rem",
+                        "space-2xl": "2.5rem",
+                        "gutter-tablet": "1.5rem",
+                        "space-3xl": "3rem",
+                        "space-lg": "1.5rem",
+                        "margin-tablet": "1.5rem",
+                        "margin-desktop": "2.5rem",
+                        "gutter-mobile": "1rem",
+                        "gutter-desktop": "2rem"
+                    },
+                    fontFamily: {
+                        sans: ["Plus Jakarta Sans", "sans-serif"]
+                    }
+                }
+            }
+        };
+    </script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-background font-sans text-on-surface antialiased">
+    <div class="flex min-h-screen w-full bg-background text-on-surface">
+        <!-- Sidebar -->
+        <aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest z-50 flex flex-col justify-between border-r border-[#EFE7DD] shadow-[0_1px_8px_rgba(43,30,22,0.03)]">
+            <div class="flex flex-col">
+                <div class="px-space-lg py-space-xl flex items-center justify-center border-b border-[#F2ECE1]">
+                    <a href="{{ url_for('pet.list_pets') }}">
+                        <img alt="NinaOrganiza Logo" class="w-full h-full object-cover block mx-auto" src="{{ url_for('static', filename='img/logo-nina.png') }}" />
+                    </a>
+                </div>
+                <nav class="px-space-md flex flex-col gap-space-2xs mt-space-md">
+                    <a href="{{ url_for('pet.list_pets') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all">
+                        <span class="material-symbols-outlined text-[20px]">home</span>
+                        <span>Início</span>
+                    </a>
+                    <a href="{{ url_for('tutor.list_tutores') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all">
+                        <span class="material-symbols-outlined text-[20px]">group</span>
+                        <span>Tutores</span>
+                    </a>
+                    <a href="{{ url_for('pet.list_pets') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all">
+                        <span class="material-symbols-outlined text-[20px]">pets</span>
+                        <span>Pets</span>
+                    </a>
+                    <div class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] text-on-surface-variant/70 hover:bg-surface-container-low hover:text-on-surface transition-all cursor-not-allowed">
+                        <span class="material-symbols-outlined text-[20px]">content_cut</span>
+                        <span>Atendimentos</span>
+                    </div>
+                    <div class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] text-on-surface-variant/70 hover:bg-surface-container-low hover:text-on-surface transition-all cursor-not-allowed">
+                        <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+                        <span>Gastos</span>
+                    </div>
+                    <div class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] text-on-surface-variant/70 hover:bg-surface-container-low hover:text-on-surface transition-all cursor-not-allowed">
+                        <span class="material-symbols-outlined text-[20px]">bar_chart</span>
+                        <span>Relatório</span>
+                    </div>
+                </nav>
+            </div>
+            <div class="p-space-md">
+                <div class="p-3 bg-surface-container-low border border-[#EFE7DD] rounded-xl text-center">
+                    <span class="text-[11px] font-bold text-primary uppercase tracking-wider block">Grooming & Estética</span>
+                    <p class="text-[12px] text-on-surface-variant mt-1">Plataforma NinaOrganiza v2.6</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="pl-72 flex flex-col min-h-screen bg-background flex-1">
+            <!-- Header -->
+            <header class="fixed top-0 left-72 right-0 h-16 bg-surface-bright/90 backdrop-blur-xl z-40 flex items-center justify-between px-space-xl border-b border-[#EFE7DD] shadow-[0_1px_6px_rgba(43,30,22,0.03)]">
+                <div class="flex items-center gap-space-md w-96">
+                    <div class="w-full flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-2 rounded-xl border border-[#EFE7DD] shadow-[0_1px_4px_-1px_rgba(43,30,22,0.04)]">
+                        <span class="material-symbols-outlined text-outline text-[18px]">search</span>
+                        <input class="w-full bg-transparent font-sans text-[13px] text-on-surface focus:outline-none placeholder:text-outline/80" placeholder="Buscar tutor, pet ou serviço..." type="text" />
+                    </div>
+                </div>
+                <div class="flex items-center gap-space-md">
+                    <div class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-full bg-functional-sage-light border border-functional-sage/30">
+                        <span class="w-2 h-2 rounded-full bg-functional-sage animate-pulse"></span>
+                        <span class="text-[12px] text-functional-sage font-bold">Disponível</span>
+                    </div>
+                    <button class="relative p-space-xs rounded-xl hover:bg-surface-container-low text-on-surface-variant transition-colors border border-transparent hover:border-[#EFE7DD]">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-functional-terracotta"></span>
+                    </button>
+                    <div class="w-9 h-9 rounded-full bg-[#1F1610] text-surface-bright flex items-center justify-center ring-2 ring-[#D97E36]/30">
+                        <span class="material-symbols-outlined text-[18px]">person</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Flash Messages (Feedback do Flask) -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="fixed top-20 right-8 z-50 flex flex-col gap-2">
+                        {% for category, message in messages %}
+                            <div class="px-4 py-3 rounded-xl shadow-lg border flex items-center gap-2 animate-fade-in
+                                {% if category == 'success' %}
+                                    bg-functional-sage-light border-functional-sage text-functional-sage
+                                {% elif category == 'error' %}
+                                    bg-error-container border-error text-error
+                                {% elif category == 'warning' %}
+                                    bg-tertiary-fixed border-tertiary text-tertiary
+                                {% else %}
+                                    bg-surface-container-low border-outline text-on-surface
+                                {% endif %}">
+                                <span class="material-symbols-outlined text-[20px]">
+                                    {% if category == 'success' %}check_circle
+                                    {% elif category == 'error' %}error
+                                    {% elif category == 'warning' %}warning
+                                    {% else %}info{% endif %}
+                                </span>
+                                <span class="text-[14px] font-medium">{{ message }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <!-- Page Content -->
+            <main class="w-full pt-16 px-space-xl flex-1">
+                {% block content %}{% endblock %}
+            </main>
+
+            <!-- Footer -->
+            <footer class="w-full px-space-xl py-space-md text-center text-on-surface-variant text-[13px] border-t border-[#EFE7DD] bg-surface-container-lowest/50">
+                NinaOrganiza © 2026 - Feito com carinho para groomers e profissionais autônomos
+            </footer>
+        </div>
+    </div>
+
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
