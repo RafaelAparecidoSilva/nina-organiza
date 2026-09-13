@@ -13,16 +13,13 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     """Configuração base"""
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'chave-secreta-padrao-nina'
-    
-    # URL do banco de dados (PostgreSQL ou SQLite como fallback)
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'nina_organiza.db')
-    
+
+    # AQUI ESTÁ A MÁGICA: Ele pega do .env. Se não achar, usa um fallback (mas vamos garantir que ache).
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    
-    # Upload de arquivos
     UPLOAD_FOLDER = os.path.join(basedir, 'app', 'static', 'uploads')
-    MAX_CONTENT_LENGTH = 5 * 1024 * 1024  # 5MB
+    MAX_CONTENT_LENGTH = 5 * 1024 * 1024
 
 
 class DevelopmentConfig(Config):
