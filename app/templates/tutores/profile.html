@@ -7,7 +7,8 @@
     <!-- Navigation -->
     <div class="flex items-center justify-between py-space-md">
         <div class="flex items-center gap-space-xs text-[13px] text-on-surface-variant font-semibold">
-            <a href="{{ url_for('tutor.list_tutores') }}" class="flex items-center gap-space-2xs text-primary hover:text-nina-caramel-deep transition-colors">
+            <a href="{{ url_for('tutor.list_tutores') }}"
+               class="flex items-center gap-space-2xs text-primary hover:text-nina-caramel-deep transition-colors">
                 <span class="material-symbols-outlined text-[18px]">arrow_back</span>
                 <span>Tutores</span>
             </a>
@@ -15,7 +16,8 @@
             <span class="text-on-surface font-bold">{{ tutor.nome }}</span>
         </div>
         <div class="flex items-center gap-space-sm">
-            <a href="{{ url_for('tutor.edit_tutor', tutor_id=tutor.id) }}" class="flex items-center gap-space-2xs px-space-md py-space-xs rounded-xl bg-surface-container-lowest hover:bg-surface-container border border-[#EFE7DD] text-on-surface text-[12px] font-semibold shadow-sm transition-all">
+            <a href="{{ url_for('tutor.edit_tutor', tutor_id=tutor.id) }}"
+               class="flex items-center gap-space-2xs px-space-md py-space-xs rounded-xl bg-surface-container-lowest hover:bg-surface-container border border-[#EFE7DD] text-on-surface text-[12px] font-semibold shadow-sm transition-all">
                 <span class="material-symbols-outlined text-[18px] text-primary">edit</span>
                 <span>Editar Cadastro</span>
             </a>
@@ -80,7 +82,8 @@
                     <h2 class="text-[20px] text-on-surface font-bold">Pets vinculados a este tutor</h2>
                     <span class="px-space-xs py-0.5 rounded-full bg-[#fdecdb] text-primary text-[11px] font-bold border border-[#f3d9b5]">{{ tutor.pets|length }}</span>
                 </div>
-                <a href="{{ url_for('pet.create_pet') }}" class="inline-flex items-center gap-space-2xs px-space-md py-space-xs rounded-xl bg-primary text-white text-[12px] font-bold hover:bg-nina-caramel-deep transition-all shadow-[0_2px_8px_rgba(200,122,50,0.22)]">
+                <a href="{{ url_for('pet.create_pet') }}"
+                   class="inline-flex items-center gap-space-2xs px-space-md py-space-xs rounded-xl bg-primary text-white text-[12px] font-bold hover:bg-nina-caramel-deep transition-all shadow-[0_2px_8px_rgba(200,122,50,0.22)]">
                     <span class="material-symbols-outlined text-[18px]">add</span>
                     <span>+ Adicionar Novo Pet</span>
                 </a>
@@ -91,11 +94,23 @@
                 <div class="bg-surface-container-lowest rounded-2xl p-space-lg border border-[#EFE7DD] shadow-[0_2px_8px_-2px_rgba(43,30,22,0.04)] hover:shadow-[0_8px_24px_-4px_rgba(200,122,50,0.15)] transition-all flex flex-col justify-between group">
                     <div>
                         <div class="flex items-start gap-space-md">
+
+                            <!-- ============================================ -->
+                            <!-- MODIFICADO: Exibe a foto do pet se existir -->
+                            <!-- ============================================ -->
                             <div class="relative w-20 h-24 rounded-xl overflow-hidden bg-surface-container-high flex-shrink-0">
+                                {% if pet.foto %}
+                                <img src="{{ url_for('static', filename='uploads/' + pet.foto) }}"
+                                     alt="Foto de {{ pet.nome }}"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+                                {% else %}
                                 <div class="w-full h-full bg-surface-container flex items-center justify-center">
                                     <span class="material-symbols-outlined text-[40px] text-outline">pets</span>
                                 </div>
+                                {% endif %}
                             </div>
+                            <!-- ============================================ -->
+
                             <div class="flex flex-col min-w-0 flex-1">
                                 <div class="flex items-center justify-between">
                                     <h3 class="text-[16px] text-on-surface font-bold truncate">{{ pet.nome }}</h3>
@@ -118,7 +133,8 @@
                         </div>
                     </div>
                     <div class="mt-space-lg pt-space-sm flex items-center justify-between border-t border-[#EFE7DD]/70">
-                        <a href="{{ url_for('pet.pet_profile', pet_id=pet.id) }}" class="flex items-center gap-1 px-space-md py-space-xs rounded-xl bg-surface-container-low hover:bg-[#faedd9] text-primary text-[12px] font-bold border border-[#EFE7DD] transition-colors">
+                        <a href="{{ url_for('pet.pet_profile', pet_id=pet.id) }}"
+                           class="flex items-center gap-1 px-space-md py-space-xs rounded-xl bg-surface-container-low hover:bg-[#faedd9] text-primary text-[12px] font-bold border border-[#EFE7DD] transition-colors">
                             <span>Ver Ficha do Pet</span>
                             <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                         </a>
@@ -137,8 +153,10 @@
                 </div>
                 <div class="flex flex-col items-center justify-center text-center p-space-xl rounded-xl bg-surface-container-low border border-[#EFE7DD]">
                     <span class="material-symbols-outlined text-outline text-[32px] mb-space-xs">event_busy</span>
-                    <p class="text-[14px] text-on-surface-variant font-semibold">Nenhum atendimento registrado ainda.</p>
-                    <p class="text-[12px] text-outline mt-0.5">Os atendimentos serão registrados na próxima fase do sistema.</p>
+                    <p class="text-[14px] text-on-surface-variant font-semibold">Nenhum atendimento registrado
+                        ainda.</p>
+                    <p class="text-[12px] text-outline mt-0.5">Os atendimentos serão registrados na próxima fase do
+                        sistema.</p>
                 </div>
             </div>
         </div>

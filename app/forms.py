@@ -4,6 +4,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectField, DateField, EmailField
 from wtforms.validators import DataRequired, Email, Optional, Length
+from flask_wtf.file import FileField, FileAllowed
 
 class TutorForm(FlaskForm):
     """Formulário de cadastro de Tutor"""
@@ -66,4 +67,7 @@ class PetForm(FlaskForm):
     observacoes = TextAreaField('Observações/Alergias', validators=[
         Optional(),
         Length(max=500, message='Observações muito longas (máx. 500 caracteres)')
+    ])
+    foto = FileField('Foto do Pet', validators=[
+        FileAllowed(['jpg', 'png', 'jpeg'], 'Apenas imagens JPG, JPEG ou PNG!')
     ])

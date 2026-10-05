@@ -38,6 +38,7 @@ class Pet(db.Model):
     porte = db.Column(db.String(10), default='medio')   # pequeno, medio, grande
     pelagem = db.Column(db.String(20), nullable=True)   # curta, media, longa
     observacoes = db.Column(db.Text, nullable=True)
+    foto = db.Column(db.String(200), nullable=True)
     data_cadastro = db.Column(db.DateTime, default=datetime.utcnow)
     
     def __repr__(self):

@@ -5,6 +5,9 @@ from flask import Blueprint, render_template, redirect, url_for, flash
 from app import db
 from app.models import Pet, Tutor
 from app.forms import PetForm
+import os
+from werkzeug.utils import secure_filename
+from flask import current_app
 
 pet_bp = Blueprint('pet', __name__)
 
@@ -27,6 +30,21 @@ def create_pet():
     ]
     
     if form.validate_on_submit():
+        # Processar upload da foto
+        foto_filename = None
+        if form.foto.data:
+            foto = form.foto.data
+            filename = secure_filename(foto.filename)
+
+            # Gerar nome único para evitar conflitos
+            import uuid
+            unique_filename = f"{uuid.uuid4().hex}_{filename}"
+
+            # Salvar na pasta de uploads
+            upload_path = os.path.join(current_app.config['UPLOAD_FOLDER'], unique_filename)
+            foto.save(upload_path)
+            foto_filename = unique_filename
+
         pet = Pet(
             nome=form.nome.data,
             tutor_id=form.tutor_id.data,
@@ -36,7 +54,8 @@ def create_pet():
             data_nascimento=form.data_nascimento.data,
             porte=form.porte.data,
             pelagem=form.pelagem.data,
-            observacoes=form.observacoes.data
+            observacoes=form.observacoes.data,
+            foto=foto_filename
         )
         db.session.add(pet)
         db.session.commit()
