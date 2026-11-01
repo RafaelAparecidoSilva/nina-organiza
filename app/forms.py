@@ -3,6 +3,7 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectField, DateField, EmailField
+from wtforms.fields.numeric import FloatField
 from wtforms.validators import DataRequired, Email, Optional, Length
 from flask_wtf.file import FileField, FileAllowed
 
@@ -71,3 +72,25 @@ class PetForm(FlaskForm):
     foto = FileField('Foto do Pet', validators=[
         FileAllowed(['jpg', 'png', 'jpeg'], 'Apenas imagens JPG, JPEG ou PNG!')
     ])
+
+class AtendimentoForm(FlaskForm):
+    pet_id = SelectField('Pet Atendido', coerce=int, validators=[DataRequired()])
+    servico = SelectField('Tipo de Serviço', choices=[
+        ('banho', 'Banho Simples'),
+        ('tosa-completa', 'Tosa Completa'),
+        ('banho-tosa', 'Banho + Tosa'),
+        ('tosa-higienica', 'Tosa Higiênica'),
+        ('hidratacao', 'Hidratação'),
+        ('corte-unhas', 'Corte de Unhas')
+    ], validators=[DataRequired()])
+    valor = FloatField('Valor Cobrado (R$)', validators=[DataRequired()])
+    data_atendimento = DateField('Data do Atendimento', format='%Y-%m-%d', validators=[DataRequired()])
+    forma_pagamento = SelectField('Forma de Pagamento', choices=[
+        ('pix', 'Pix'),
+        ('debito', 'Cartão de Débito'),
+        ('credito', 'Cartão de Crédito'),
+        ('dinheiro', 'Dinheiro'),
+        ('a-receber', 'A Receber')
+    ], validators=[DataRequired()])
+    observacoes = TextAreaField('Observações do Atendimento', validators=[Optional()])
+    produtos_utilizados = TextAreaField('Produtos Utilizados (separados por vírgula)', validators=[Optional()])

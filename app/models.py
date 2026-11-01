@@ -43,3 +43,20 @@ class Pet(db.Model):
     
     def __repr__(self):
         return f'<Pet {self.nome}>'
+
+
+class Atendimento(db.Model):
+    __tablename__ = 'atendimentos'
+
+    id = db.Column(db.Integer, primary_key=True)
+    pet_id = db.Column(db.Integer, db.ForeignKey('pets.id'), nullable=False)
+    servico = db.Column(db.String(100), nullable=False)  # ex: Banho & Tosa
+    valor = db.Column(db.Float, nullable=False)
+    data_atendimento = db.Column(db.Date, nullable=False)
+    forma_pagamento = db.Column(db.String(50), nullable=False)  # Pix, Dinheiro, etc.
+    observacoes = db.Column(db.Text, nullable=True)
+    produtos_utilizados = db.Column(db.Text, nullable=True)  # Ex: "Shampoo X, Condicionador Y"
+    data_cadastro = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relacionamento para facilitar o acesso aos dados do Pet/Tutor no template
+    pet = db.relationship('Pet', backref=db.backref('atendimentos', lazy=True))

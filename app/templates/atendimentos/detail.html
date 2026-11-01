@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Atendimento #{{ atendimento.id }} - NinaOrganiza{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full pb-space-3xl py-space-xl">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-xl">
+        <div class="flex flex-col gap-space-2xs">
+            <a href="{{ url_for('atendimento.list_atendimentos') }}" class="inline-flex items-center gap-space-xs font-label-md text-label-md text-secondary hover:text-primary transition-colors w-fit">
+                <span class="material-symbols-outlined text-[18px]">arrow_back</span> Voltar para Atendimentos
+            </a>
+            <div class="flex items-center gap-space-sm flex-wrap mt-space-2xs">
+                <h1 class="font-headline-lg text-headline-lg text-nina-espresso-dark font-bold tracking-tight">Detalhes do Atendimento #{{ "%03d"|format(atendimento.id) }}</h1>
+                <span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-functional-sage-light text-functional-sage font-label-md text-label-md font-semibold">
+                    <span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1">check_circle</span> Concluído
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+        <!-- Coluna Esquerda: Resumo e Notas -->
+        <div class="lg:col-span-8 flex flex-col gap-space-lg">
+            <div class="bg-surface-container-lowest rounded-2xl p-space-xl shadow-[0_2px_12px_rgba(43,30,22,0.04)] relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-2 h-full bg-nina-caramel-bright"></div>
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-space-md pb-space-lg mb-space-lg border-b border-nina-cream-muted/60">
+                    <div class="flex flex-col">
+                        <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Serviço Realizado</span>
+                        <h2 class="font-headline-md text-headline-md text-nina-espresso-dark font-bold mt-1">{{ atendimento.servico|replace('-', ' ')|title }}</h2>
+                        <div class="flex items-center gap-space-xs mt-2 text-on-surface-variant font-body-md text-body-md">
+                            <span class="material-symbols-outlined text-[18px] text-nina-caramel-deep">calendar_today</span>
+                            <span>{{ atendimento.data_atendimento.strftime('%d de %B de %Y') }}</span>
+                        </div>
+                    </div>
+                    <div class="flex sm:flex-col items-baseline sm:items-end justify-between sm:justify-start bg-functional-sage-light/60 p-space-md rounded-xl">
+                        <span class="font-label-sm text-label-sm text-functional-sage font-semibold uppercase">Valor Cobrado</span>
+                        <span class="font-display text-headline-lg text-functional-sage font-bold leading-none mt-1">R$ {{ "%.2f"|format(atendimento.valor) }}</span>
+                        <span class="font-label-sm text-label-sm text-secondary mt-1">{{ atendimento.forma_pagamento|title }}</span>
+                    </div>
+                </div>
+            </div>
+
+            {% if atendimento.observacoes or atendimento.produtos_utilizados %}
+            <div class="bg-surface-container-lowest rounded-2xl p-space-xl shadow-[0_2px_12px_rgba(43,30,22,0.04)] flex flex-col gap-space-lg">
+                {% if atendimento.produtos_utilizados %}
+                <div>
+                    <div class="flex items-center gap-space-xs mb-space-xs">
+                        <span class="material-symbols-outlined text-[20px] text-nina-caramel-bright">inventory_2</span>
+                        <h3 class="font-headline-sm text-headline-sm text-nina-espresso-dark font-semibold">Produtos Utilizados</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-space-xs">
+                        {% for prod in atendimento.produtos_utilizados.split(',') %}
+                            <div class="flex items-center gap-2 px-space-sm py-2 rounded-xl bg-surface-container-low text-nina-espresso-dark font-body-md text-body-md">
+                                <span class="w-2 h-2 rounded-full bg-nina-caramel-bright"></span> {{ prod.strip() }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if atendimento.observacoes %}
+                <div class="pt-space-md border-t border-nina-cream-muted/60">
+                    <div class="flex items-center gap-space-xs mb-space-xs">
+                        <span class="material-symbols-outlined text-[20px] text-nina-caramel-bright">clinical_notes</span>
+                        <h3 class="font-headline-sm text-headline-sm text-nina-espresso-dark font-semibold">Observações do Profissional</h3>
+                    </div>
+                    <div class="p-space-md rounded-xl bg-surface-container-low/70 font-body-md text-body-md text-nina-espresso-mid leading-relaxed">
+                        {{ atendimento.observacoes }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Coluna Direita: Perfil do Pet e Tutor -->
+        <div class="lg:col-span-4 flex flex-col gap-space-lg">
+            <div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-[0_2px_12px_rgba(43,30,22,0.04)] flex flex-col gap-space-lg">
+                <div class="flex flex-col">
+                    <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider mb-space-sm">Ficha do Paciente</span>
+                    <div class="flex items-center gap-space-md p-space-sm rounded-xl bg-surface-container-low">
+                        <!-- ============================================ -->
+                        <!-- ALTERADO: Agora exibe a foto do pet se existir -->
+                        <!-- ============================================ -->
+                        <div class="w-16 h-16 rounded-full object-cover shadow-sm bg-nina-cream-muted flex items-center justify-center flex-shrink-0 overflow-hidden">
+                            {% if atendimento.pet.foto %}
+                                <img src="{{ url_for('static', filename='uploads/' + atendimento.pet.foto) }}"
+                                     alt="Foto de {{ atendimento.pet.nome }}"
+                                     class="w-full h-full object-cover" />
+                            {% else %}
+                                <span class="material-symbols-outlined text-[32px] text-outline">pets</span>
+                            {% endif %}
+                        </div>
+                        <!-- ============================================ -->
+                        <div class="flex flex-col min-w-0">
+                            <h4 class="font-headline-sm text-headline-sm text-nina-espresso-dark font-bold truncate">{{ atendimento.pet.nome }}</h4>
+                            <span class="font-body-sm text-body-sm text-on-surface-variant truncate">{{ atendimento.pet.raca or 'SRD' }} • {{ atendimento.pet.sexo|capitalize }}</span>
+                            <div class="flex items-center gap-space-2xs mt-1">
+                                <span class="px-2 py-0.5 rounded-md bg-surface-container text-secondary font-label-sm text-label-sm">{{ atendimento.pet.porte|capitalize }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col pt-space-md border-t border-nina-cream-muted/60">
+                    <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider mb-space-sm">Dados do Tutor</span>
+                    <div class="flex flex-col gap-space-xs">
+                        <div class="flex items-center gap-space-xs text-nina-espresso-dark">
+                            <span class="material-symbols-outlined text-[18px] text-secondary">person</span>
+                            <span class="font-title-md text-title-md font-semibold">{{ atendimento.pet.tutor.nome }}</span>
+                        </div>
+                        <div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
+                            <span class="material-symbols-outlined text-[18px] text-secondary">call</span>
+                            <span>{{ atendimento.pet.tutor.telefone }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
