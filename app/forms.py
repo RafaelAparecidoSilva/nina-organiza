@@ -7,6 +7,7 @@ from wtforms.fields.numeric import FloatField
 from wtforms.validators import DataRequired, Email, Optional, Length
 from flask_wtf.file import FileField, FileAllowed
 
+
 class TutorForm(FlaskForm):
     """Formulário de cadastro de Tutor"""
     nome = StringField('Nome Completo', validators=[
@@ -94,3 +95,41 @@ class AtendimentoForm(FlaskForm):
     ], validators=[DataRequired()])
     observacoes = TextAreaField('Observações do Atendimento', validators=[Optional()])
     produtos_utilizados = TextAreaField('Produtos Utilizados (separados por vírgula)', validators=[Optional()])
+
+
+class GastoForm(FlaskForm):
+    descricao = StringField('Descrição do Gasto / Item', validators=[
+        DataRequired(message='Descrição é obrigatória'),
+        Length(max=200, message='Descrição muito longa')
+    ])
+    categoria = SelectField('Categoria do Gasto', choices=[
+        ('insumos', '🧴 Insumos & Produtos (shampoos, perfumes, hidratantes)'),
+        ('equipamentos', '✂️ Equipamentos (máquinas, sopradores, lâminas)'),
+        ('manutencao', '⚙️ Manutenção & Reparos (afiação, calibragem)'),
+        ('custos_fixos', '🏢 Custos Operacionais & Fixos (energia, água, internet)'),
+        ('outros', '📦 Outros Gastos Operacionais')
+    ], validators=[DataRequired()])
+    valor = FloatField('Valor da Despesa (R$)', validators=[
+        DataRequired(message='Valor é obrigatório')
+    ])
+    data_gasto = DateField('Data do Pagamento', format='%Y-%m-%d', validators=[
+        DataRequired(message='Data é obrigatória')
+    ])
+    fornecedor = StringField('Fornecedor / Estabelecimento', validators=[
+        Optional(),
+        Length(max=100, message='Nome do fornecedor muito longo')
+    ])
+    forma_pagamento = SelectField('Forma de Pagamento', choices=[
+        ('pix', '⚡ Pix (Transferência Instantânea)'),
+        ('credito', '💳 Cartão de Crédito'),
+        ('debito', '💳 Cartão de Débito'),
+        ('boleto', '📄 Boleto Bancário'),
+        ('dinheiro', '💵 Dinheiro em Espécie')
+    ], validators=[DataRequired()])
+    observacoes = TextAreaField('Observações / Detalhes Adicionais', validators=[
+        Optional(),
+        Length(max=500, message='Observações muito longas')
+    ])
+    comprovante = FileField('Comprovante (Recibo/Nota Fiscal)', validators=[
+        FileAllowed(['pdf', 'jpg', 'jpeg', 'png'], 'Apenas PDF, JPG ou PNG!')
+    ])

@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Gasto #{{ gasto.id }} - NinaOrganiza{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full pb-space-3xl">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-space-xl">
+        <div class="flex items-center gap-space-xs text-[13px] text-on-surface-variant font-semibold">
+            <a href="{{ url_for('gasto.list_gastos') }}" class="flex items-center gap-space-2xs text-primary hover:text-nina-caramel-deep transition-colors">
+                <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                <span>Voltar para Gastos</span>
+            </a>
+            <span class="text-outline-variant">/</span>
+            <span class="text-on-surface font-bold">Registro #G-{{ "%03d"|format(gasto.id) }}</span>
+        </div>
+        <div class="flex items-center gap-space-xs">
+            <button onclick="window.print()" class="inline-flex items-center gap-space-xs px-space-md py-2 rounded-xl bg-surface-container-lowest hover:bg-surface-container border border-[#EFE7DD] text-on-surface text-[12px] font-semibold shadow-sm transition-all">
+                <span class="material-symbols-outlined text-[18px]">print</span>
+                <span>Imprimir / Recibo</span>
+            </button>
+            <a href="{{ url_for('gasto.edit_gasto', id=gasto.id) }}" class="inline-flex items-center gap-space-xs px-space-md py-2 rounded-xl bg-surface-container-lowest hover:bg-surface-container border border-[#EFE7DD] text-on-surface text-[12px] font-semibold shadow-sm transition-all">
+                <span class="material-symbols-outlined text-[18px]">edit</span>
+                <span>Editar</span>
+            </a>
+            <form method="POST" action="{{ url_for('gasto.delete_gasto', id=gasto.id) }}" class="inline" onsubmit="return confirm('Deseja realmente excluir este gasto? Esta ação não pode ser desfeita.');">
+                <!-- Token de segurança CSRF obrigatório no Flask -->
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <button type="submit" class="inline-flex items-center gap-space-xs px-space-md py-2 rounded-xl bg-functional-terracotta-light hover:bg-red-100 text-functional-terracotta text-[12px] font-semibold transition-all">
+                    <span class="material-symbols-outlined text-[18px]">delete_outline</span>
+                    <span>Excluir</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-space-xl">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 flex flex-col gap-space-lg">
+            <!-- Main Card -->
+            <div class="bg-surface-container-lowest rounded-2xl p-space-xl shadow-[0_2px_12px_rgba(43,30,22,0.04)] relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-2 h-full bg-nina-caramel-bright"></div>
+                <div class="flex items-center justify-between mb-space-lg">
+                    <div class="flex items-center gap-space-xs">
+                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full font-label-md text-label-md font-semibold bg-primary-fixed/50 text-nina-caramel-deep">
+                            <span class="material-symbols-outlined text-[16px]">inventory_2</span>
+                            {{ gasto.categoria|title }}
+                        </span>
+                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full font-label-md text-label-md font-semibold bg-functional-sage-light text-functional-sage">
+                            <span class="w-1.5 h-1.5 rounded-full bg-functional-sage"></span>
+                            Pago
+                        </span>
+                    </div>
+                    <span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Despesa Operacional</span>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-space-md pb-space-lg mb-space-lg border-b border-nina-cream-muted/60">
+                    <div class="flex flex-col">
+                        <h2 class="font-headline-md text-headline-md text-nina-espresso-dark font-bold">{{ gasto.descricao }}</h2>
+                        <p class="font-body-md text-body-md text-on-surface-variant mt-1">Reposição periódica de insumo dermocosmético</p>
+                    </div>
+                    <div class="flex sm:flex-col items-baseline sm:items-end">
+                        <span class="font-display text-headline-lg text-functional-terracotta font-bold">- R$ {{ "%.2f"|format(gasto.valor) }}</span>
+                        <span class="font-label-sm text-label-sm text-secondary mt-1">Liquidado em conta corrente</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-space-md">
+                    <div class="flex flex-col p-space-md rounded-xl bg-surface-container-low border border-[#EFE7DD]">
+                        <div class="flex items-center gap-space-xs mb-1">
+                            <span class="material-symbols-outlined text-[18px] text-nina-caramel-bright">calendar_today</span>
+                            <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Data do Pagamento</span>
+                        </div>
+                        <span class="font-label-lg text-label-lg text-nina-espresso-dark font-semibold">{{ gasto.data_gasto.strftime('%d de %B de %Y') }}</span>
+                        <span class="font-body-sm text-body-sm text-on-surface-variant">Competência: {{ gasto.data_gasto.strftime('%m/%Y') }}</span>
+                    </div>
+                    <div class="flex flex-col p-space-md rounded-xl bg-surface-container-low border border-[#EFE7DD]">
+                        <div class="flex items-center gap-space-xs mb-1">
+                            <span class="material-symbols-outlined text-[18px] text-functional-sage">bolt</span>
+                            <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Forma de Pagamento</span>
+                        </div>
+                        <span class="font-label-lg text-label-lg text-nina-espresso-dark font-semibold">{{ gasto.forma_pagamento|title }}</span>
+                        {% if gasto.fornecedor %}
+                        <span class="font-body-sm text-body-sm text-on-surface-variant">Chave CNPJ Fornecedor</span>
+                        {% endif %}
+                    </div>
+                    {% if gasto.fornecedor %}
+                    <div class="flex flex-col p-space-md rounded-xl bg-surface-container-low border border-[#EFE7DD]">
+                        <div class="flex items-center gap-space-xs mb-1">
+                            <span class="material-symbols-outlined text-[18px] text-secondary">storefront</span>
+                            <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Fornecedor</span>
+                        </div>
+                        <span class="font-label-lg text-label-lg text-nina-espresso-dark font-semibold truncate">{{ gasto.fornecedor }}</span>
+                        <span class="font-body-sm text-body-sm text-on-surface-variant">CNPJ: 12.345.678/0001-90</span>
+                    </div>
+                    {% endif %}
+                    <div class="flex flex-col p-space-md rounded-xl bg-surface-container-low border border-[#EFE7DD]">
+                        <div class="flex items-center gap-space-xs mb-1">
+                            <span class="material-symbols-outlined text-[18px] text-secondary">badge</span>
+                            <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Registrado por</span>
+                        </div>
+                        <span class="font-label-lg text-label-lg text-nina-espresso-dark font-semibold">Nina Groomer</span>
+                        <span class="font-body-sm text-body-sm text-on-surface-variant">Profissional Autônomo Pro</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Observações -->
+            {% if gasto.observacoes %}
+            <div class="bg-surface-container-lowest rounded-2xl p-space-xl shadow-[0_2px_12px_rgba(43,30,22,0.04)]">
+                <div class="flex items-center gap-space-xs mb-space-sm">
+                    <span class="material-symbols-outlined text-[20px] text-nina-caramel-bright">description</span>
+                    <h3 class="font-headline-sm text-headline-sm text-nina-espresso-dark font-semibold">Observações</h3>
+                </div>
+                <p class="font-body-md text-body-md text-nina-espresso-mid leading-relaxed">{{ gasto.observacoes }}</p>
+            </div>
+            {% endif %}
+
+            <!-- Histórico -->
+            <div class="bg-surface-container-lowest rounded-2xl p-space-xl shadow-[0_2px_12px_rgba(43,30,22,0.04)]">
+                <div class="flex items-center gap-space-xs mb-space-sm">
+                    <span class="material-symbols-outlined text-[20px] text-nina-caramel-bright">history</span>
+                    <h3 class="font-headline-sm text-headline-sm text-nina-espresso-dark font-semibold">Histórico e Auditoria do Registro</h3>
+                </div>
+                <div class="flex items-start gap-space-sm">
+                    <div class="w-8 h-8 rounded-full bg-functional-sage-light flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-[18px] text-functional-sage">check_circle</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-label-md text-label-md text-nina-espresso-dark font-bold">Despesa Registrada e Conciliada</span>
+                        <span class="font-body-sm text-body-sm text-on-surface-variant">Criado em {{ gasto.data_cadastro.strftime('%d/%m/%Y') }} às {{ gasto.data_cadastro.strftime('%H:%M') }} por Nina Groomer</span>
+                        <span class="font-body-sm text-body-sm text-on-surface-variant">Forma: {{ gasto.forma_pagamento|title }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="lg:col-span-1 flex flex-col gap-space-lg">
+            <!-- Comprovante -->
+            {% if gasto.comprovante %}
+            <div class="bg-surface-container-lowest rounded-2xl p-space-lg border border-outline-variant/30 shadow-sm">
+                <div class="flex items-center justify-between mb-space-sm">
+                    <div class="flex items-center gap-space-xs">
+                        <span class="material-symbols-outlined text-[20px] text-nina-caramel-bright">receipt_long</span>
+                        <h3 class="font-headline-sm text-headline-sm text-nina-espresso-dark font-semibold">Comprovante Digital</h3>
+                    </div>
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-functional-sage-light text-functional-sage text-[11px] font-bold">
+                        <span class="material-symbols-outlined text-[12px]">verified</span>
+                        Autenticado
+                    </span>
+                </div>
+                <div class="bg-nina-cream-surface rounded-xl p-space-md font-mono text-[12px] text-nina-espresso-mid">
+                    <div class="text-center pb-2 border-b border-dashed border-nina-cream-muted">
+                        <span class="font-bold text-nina-espresso-dark block text-[13px]">NINAORGANIZA GASTOS</span>
+                        <span class="text-secondary text-[10px]">RECIBO DE DESPESA #G-{{ "%03d"|format(gasto.id) }}</span>
+                    </div>
+                    <div class="flex justify-between pt-2">
+                        <span class="text-secondary">Data/Hora:</span>
+                        <span>{{ gasto.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</span>
+                    </div>
+                    {% if gasto.fornecedor %}
+                    <div class="flex justify-between">
+                        <span class="text-secondary">Favorecido:</span>
+                        <span>{{ gasto.fornecedor }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="py-2 border-y border-dashed border-nina-cream-muted my-2">
+                        <div class="flex justify-between">
+                            <span>{{ gasto.descricao }}</span>
+                            <span>R$ {{ "%.2f"|format(gasto.valor) }}</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between font-bold text-[13px] text-nina-espresso-dark pt-1">
+                        <span>TOTAL PAGO ({{ gasto.forma_pagamento|upper }}):</span>
+                        <span class="text-functional-sage">R$ {{ "%.2f"|format(gasto.valor) }}</span>
+                    </div>
+                </div>
+                <a href="{{ url_for('static', filename='uploads/' + gasto.comprovante) }}" download class="mt-space-md w-full py-2.5 rounded-xl bg-nina-caramel-bright hover:bg-nina-caramel-deep text-on-primary font-label-md text-label-md font-semibold transition-all shadow-[0_4px_12px_rgba(200,122,50,0.25)] flex items-center justify-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[18px]">download</span>
+                    Baixar Comprovante (PDF)
+                </a>
+            </div>
+            {% endif %}
+
+            <!-- Impacto no Mês -->
+            <div class="bg-surface-container-lowest rounded-2xl p-space-lg border border-outline-variant/30 shadow-sm">
+                <div class="flex items-center justify-between mb-space-sm">
+                    <div class="flex items-center gap-space-xs">
+                        <span class="material-symbols-outlined text-[20px] text-nina-caramel-bright">donut_large</span>
+                        <h3 class="font-headline-sm text-headline-sm text-nina-espresso-dark font-semibold">Impacto no Mês</h3>
+                    </div>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant">Outubro / 2026</span>
+                </div>
+                <div class="text-center py-space-md">
+                    <span class="text-[48px] font-bold text-nina-espresso-dark">{{ "%.1f"|format(percentual) }}%</span>
+                    <p class="font-body-md text-body-md text-on-surface-variant mt-1">Representa {{ "%.1f"|format(percentual) }}% do total de despesas operacionais de Outubro.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-space-sm mt-space-md pt-space-md border-t border-outline-variant/30">
+                    <div class="flex flex-col">
+                        <span class="text-[11px] text-outline uppercase tracking-wider">Total de Gastos (Mês)</span>
+                        <span class="text-[16px] text-nina-espresso-dark font-bold">R$ {{ "%.2f"|format(total_mes) }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[11px] text-outline uppercase tracking-wider">Orçamento Restante</span>
+                        <span class="text-[16px] text-functional-sage font-bold">R$ {{ "%.2f"|format(3000 - total_mes) }}</span>
+                    </div>
+                </div>
+                <div class="mt-space-md pt-space-md border-t border-outline-variant/30">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[11px] text-outline uppercase tracking-wider">Categoria: {{ gasto.categoria|title }}</span>
+                        <span class="text-[12px] text-nina-espresso-dark font-bold">R$ {{ "%.2f"|format(total_categoria) }} acumulados</span>
+                    </div>
+                    <div class="w-full h-2 bg-surface-container-low rounded-full overflow-hidden">
+                        <div class="h-full bg-nina-caramel-bright rounded-full" style="width: {{ (total_categoria / total_mes * 100) if total_mes > 0 else 0 }}%"></div>
+                    </div>
+                    <span class="text-[11px] text-on-surface-variant mt-1 block">Esta compra corresponde a {{ "%.0f"|format((gasto.valor / total_categoria * 100) if total_categoria > 0 else 0) }}% dos {{ gasto.categoria }} do mês</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

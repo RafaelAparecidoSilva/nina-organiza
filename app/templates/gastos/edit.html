@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Gasto #{{ gasto.id }} - NinaOrganiza{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full pb-space-3xl">
+    <div class="flex items-center justify-between mb-space-xl">
+        <div class="flex flex-col">
+            <div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md mb-space-2xs">
+                <span class="material-symbols-outlined text-[16px] text-nina-caramel-bright">account_balance_wallet</span>
+                <a href="{{ url_for('gasto.list_gastos') }}" class="hover:underline">Gastos</a>
+                <span>/</span>
+                <span class="text-nina-espresso-dark font-semibold">Editar Registro #G-{{ "%03d"|format(gasto.id) }}</span>
+            </div>
+            <div class="flex items-center gap-space-xs mb-space-2xs">
+                <span class="w-2 h-2 rounded-full bg-functional-terracotta"></span>
+                <span class="font-label-sm text-label-sm uppercase tracking-wider text-functional-terracotta font-bold">Editando Despesa</span>
+            </div>
+            <h1 class="font-headline-lg text-headline-lg text-nina-espresso-dark tracking-tight">Editar Gasto</h1>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-space-xl">
+        <div class="lg:col-span-2">
+            <div class="bg-surface-container-lowest rounded-2xl shadow-[0_4px_24px_-4px_rgba(43,30,22,0.06)] p-space-xl md:p-space-2xl">
+                <form method="POST" enctype="multipart/form-data" class="flex flex-col gap-space-xl">
+                    {{ form.hidden_tag() }}
+
+                    <div class="flex items-center justify-between border-b border-[#F2ECE1] pb-space-md">
+                        <div class="flex items-center gap-space-sm">
+                            <div class="w-10 h-10 rounded-xl bg-secondary-container/60 flex items-center justify-center text-nina-caramel-deep">
+                                <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <h2 class="text-[20px] font-bold text-nina-espresso-dark">Dados Principais da Compra</h2>
+                                <p class="text-[13px] text-on-surface-variant">Atualize as informações do gasto</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-space-xs">
+                        <label class="font-label-lg text-label-lg text-nina-espresso-dark flex items-center gap-space-2xs">
+                            <span>Descrição do Gasto / Item</span><span class="text-functional-terracotta">*</span>
+                        </label>
+                        {{ form.descricao(class='w-full h-12 px-space-md bg-surface-container-low text-nina-espresso-dark font-body-md text-body-md rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-nina-caramel-bright shadow-sm transition-all', placeholder='Ex: Shampoo Galão 5L Neutro') }}
+                        {% if form.descricao.errors %}<span class="text-[12px] text-error">{{ form.descricao.errors[0] }}</span>{% endif %}
+                    </div>
+
+                    <div class="flex flex-col gap-space-xs">
+                        <label class="font-label-lg text-label-lg text-nina-espresso-dark flex items-center gap-space-2xs">
+                            <span>Categoria do Gasto</span><span class="text-functional-terracotta">*</span>
+                        </label>
+                        {{ form.categoria(class='w-full h-12 px-space-md bg-surface-container-low text-nina-espresso-dark font-body-md text-body-md rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-nina-caramel-bright shadow-sm transition-all cursor-pointer') }}
+                        {% if form.categoria.errors %}<span class="text-[12px] text-error">{{ form.categoria.errors[0] }}</span>{% endif %}
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+                        <div class="flex flex-col gap-space-xs">
+                            <label class="font-label-lg text-label-lg text-nina-espresso-dark flex items-center gap-space-2xs">
+                                <span>Valor da Despesa</span><span class="text-functional-terracotta">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-space-md top-1/2 -translate-y-1/2 font-label-lg text-label-lg text-nina-caramel-bright font-bold pointer-events-none">R$</span>
+                                {{ form.valor(class='w-full h-12 pl-12 pr-space-md bg-surface-container-low text-nina-espresso-dark font-title-md text-title-md rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-nina-caramel-bright shadow-sm transition-all', placeholder='0.00', step='0.01') }}
+                            </div>
+                            {% if form.valor.errors %}<span class="text-[12px] text-error">{{ form.valor.errors[0] }}</span>{% endif %}
+                        </div>
+
+                        <div class="flex flex-col gap-space-xs">
+                            <label class="font-label-lg text-label-lg text-nina-espresso-dark flex items-center gap-space-2xs">
+                                <span>Data do Pagamento</span><span class="text-functional-terracotta">*</span>
+                            </label>
+                            {{ form.data_gasto(class='w-full h-12 px-space-md bg-surface-container-low text-nina-espresso-dark font-body-md text-body-md rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-nina-caramel-bright shadow-sm transition-all cursor-pointer', type='date') }}
+                            {% if form.data_gasto.errors %}<span class="text-[12px] text-error">{{ form.data_gasto.errors[0] }}</span>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+                        <div class="flex flex-col gap-space-xs">
+                            <label class="font-label-lg text-label-lg text-nina-espresso-dark flex items-center gap-space-2xs">
+                                <span>Fornecedor / Estabelecimento</span>
+                                <span class="text-[11px] text-on-surface-variant font-normal">Opcional</span>
+                            </label>
+                            {{ form.fornecedor(class='w-full h-12 px-space-md bg-surface-container-low text-nina-espresso-dark font-body-md text-body-md rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-nina-caramel-bright shadow-sm transition-all', placeholder='Ex: Distribuidora Pet Clean') }}
+                            {% if form.fornecedor.errors %}<span class="text-[12px] text-error">{{ form.fornecedor.errors[0] }}</span>{% endif %}
+                        </div>
+
+                        <div class="flex flex-col gap-space-xs">
+                            <label class="font-label-lg text-label-lg text-nina-espresso-dark flex items-center gap-space-2xs">
+                                <span>Forma de Pagamento</span><span class="text-functional-terracotta">*</span>
+                            </label>
+                            {{ form.forma_pagamento(class='w-full h-12 px-space-md bg-surface-container-low text-nina-espresso-dark font-body-md text-body-md rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-nina-caramel-bright shadow-sm transition-all cursor-pointer') }}
+                            {% if form.forma_pagamento.errors %}<span class="text-[12px] text-error">{{ form.forma_pagamento.errors[0] }}</span>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-space-xs">
+                        <label class="font-label-lg text-label-lg text-nina-espresso-dark">Observações <span class="text-[11px] text-on-surface-variant font-normal">(Opcional)</span></label>
+                        {{ form.observacoes(class='w-full p-space-md bg-surface-container-low text-nina-espresso-dark font-body-md text-body-md rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-nina-caramel-bright shadow-sm transition-all placeholder:text-outline resize-none', rows='3') }}
+                    </div>
+
+                    <div class="flex flex-col gap-space-xs">
+                        <label class="font-label-lg text-label-lg text-nina-espresso-dark">Comprovante <span class="text-[11px] text-on-surface-variant font-normal">(Deixe vazio para manter o atual)</span></label>
+                        {% if gasto.comprovante %}
+                        <div class="p-space-md rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-center gap-space-sm mb-2">
+                            <span class="material-symbols-outlined text-[20px] text-functional-sage">check_circle</span>
+                            <span class="font-body-sm text-body-sm text-on-surface-variant">Atual: <strong>{{ gasto.comprovante }}</strong></span>
+                        </div>
+                        {% endif %}
+                        {{ form.comprovante(class='w-full p-space-md bg-surface-container-low text-nina-espresso-dark font-body-md text-body-md rounded-xl focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-nina-caramel-bright shadow-sm transition-all', accept='.pdf,.jpg,.jpeg,.png') }}
+                    </div>
+
+                    <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-space-md pt-space-md">
+                        <a href="{{ url_for('gasto.detail_gasto', id=gasto.id) }}" class="w-full sm:w-auto px-space-xl h-12 rounded-xl bg-surface-container-low text-nina-espresso-dark font-label-lg text-label-lg hover:bg-surface-container transition-all flex items-center justify-center">Cancelar</a>
+                        <button type="submit" class="w-full sm:w-auto px-space-2xl h-12 rounded-xl bg-nina-caramel-bright text-on-primary font-label-lg text-label-lg shadow-[0_12px_28px_-4px_rgba(200,122,50,0.32)] hover:bg-nina-caramel-deep transition-all flex items-center justify-center gap-space-xs">
+                            <span class="material-symbols-outlined text-[20px]">check</span>
+                            <span>Salvar Alterações</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

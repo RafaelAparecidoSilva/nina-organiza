@@ -60,3 +60,21 @@ class Atendimento(db.Model):
 
     # Relacionamento para facilitar o acesso aos dados do Pet/Tutor no template
     pet = db.relationship('Pet', backref=db.backref('atendimentos', lazy=True))
+
+
+class Gasto(db.Model):
+    __tablename__ = 'gastos'
+
+    id = db.Column(db.Integer, primary_key=True)
+    descricao = db.Column(db.String(200), nullable=False)
+    categoria = db.Column(db.String(50), nullable=False)  # insumos, equipamentos, manutencao, custos_fixos, outros
+    valor = db.Column(db.Float, nullable=False)
+    data_gasto = db.Column(db.Date, nullable=False)
+    fornecedor = db.Column(db.String(100), nullable=True)
+    forma_pagamento = db.Column(db.String(50), nullable=False)  # pix, credito, debito, boleto, dinheiro
+    observacoes = db.Column(db.Text, nullable=True)
+    comprovante = db.Column(db.String(200), nullable=True)  # nome do arquivo de upload
+    data_cadastro = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<Gasto {self.descricao}>'
