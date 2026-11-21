@@ -124,44 +124,80 @@
         <aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest z-50 flex flex-col justify-between border-r border-[#EFE7DD] shadow-[0_1px_8px_rgba(43,30,22,0.03)]">
             <div class="flex flex-col">
                 <div class="px-space-lg py-space-xl flex items-center justify-center border-b border-[#F2ECE1]">
-                    <a href="{{ url_for('pet.list_pets') }}">
-                        <img alt="NinaOrganiza Logo" class="w-full h-full object-cover block mx-auto" src="{{ url_for('static', filename='img/logo-nina.png') }}" />
+                    <a href="{{ url_for('main.index') }}" class="flex items-center justify-center w-full">
+                        <img alt="NinaOrganiza Logo" class="max-w-[180px] h-auto object-contain hover:scale-[1.02] transition-transform duration-200" src="{{ url_for('static', filename='img/logo-nina.png') }}" />
                     </a>
                 </div>
+
                 <nav class="px-space-md flex flex-col gap-space-2xs mt-space-md">
-                    <a href="{{ url_for('pet.list_pets') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all">
+                    <!-- Início -->
+                    <a href="{{ url_for('main.index') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] transition-all
+                        {% if request.path == '/' %}
+                            bg-primary text-white shadow-[0_4px_12px_rgba(200,122,50,0.28)]
+                        {% else %}
+                            text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface
+                        {% endif %}">
                         <span class="material-symbols-outlined text-[20px]">home</span>
                         <span>Início</span>
                     </a>
-                    <a href="{{ url_for('tutor.list_tutores') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all">
+
+                    <!-- Tutores -->
+                    <a href="{{ url_for('tutor.list_tutores') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] transition-all
+                        {% if request.path.startswith('/tutores') %}
+                            bg-primary text-white shadow-[0_4px_12px_rgba(200,122,50,0.28)]
+                        {% else %}
+                            text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface
+                        {% endif %}">
                         <span class="material-symbols-outlined text-[20px]">group</span>
                         <span>Tutores</span>
                     </a>
-                    <a href="{{ url_for('pet.list_pets') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all">
+
+                    <!-- Pets -->
+                    <a href="{{ url_for('pet.list_pets') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] transition-all
+                        {% if request.path.startswith('/pets') %}
+                            bg-primary text-white shadow-[0_4px_12px_rgba(200,122,50,0.28)]
+                        {% else %}
+                            text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface
+                        {% endif %}">
                         <span class="material-symbols-outlined text-[20px]">pets</span>
                         <span>Pets</span>
                     </a>
 
-                    <a href="{{ url_for('atendimento.list_atendimentos') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all">
+                    <!-- Atendimentos -->
+                    <a href="{{ url_for('atendimento.list_atendimentos') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] transition-all
+                        {% if request.path.startswith('/atendimentos') %}
+                            bg-primary text-white shadow-[0_4px_12px_rgba(200,122,50,0.28)]
+                        {% else %}
+                            text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface
+                        {% endif %}">
                         <span class="material-symbols-outlined text-[20px]">content_cut</span>
                         <span>Atendimentos</span>
                     </a>
 
-                    <a href="{{ url_for('gasto.list_gastos') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all">
+                    <!-- Gastos -->
+                    <a href="{{ url_for('gasto.list_gastos') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] transition-all
+                        {% if request.path.startswith('/gastos') %}
+                            bg-primary text-white shadow-[0_4px_12px_rgba(200,122,50,0.28)]
+                        {% else %}
+                            text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface
+                        {% endif %}">
                         <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
                         <span>Gastos</span>
                     </a>
 
-<!--                    <div class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] text-on-surface-variant/70 hover:bg-surface-container-low hover:text-on-surface transition-all cursor-not-allowed">-->
-<!--                        <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>-->
-<!--                        <span>Gastos</span>-->
-<!--                    </div>-->
-                    <div class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] text-on-surface-variant/70 hover:bg-surface-container-low hover:text-on-surface transition-all cursor-not-allowed">
+                    <!-- Relatório -->
+                    <a href="{{ url_for('dashboard.index') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-semibold text-[14px] transition-all
+                        {% if request.path.startswith('/dashboard') %}
+                            bg-primary text-white shadow-[0_4px_12px_rgba(200,122,50,0.28)]
+                        {% else %}
+                            text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface
+                        {% endif %}">
                         <span class="material-symbols-outlined text-[20px]">bar_chart</span>
                         <span>Relatório</span>
-                    </div>
+                    </a>
                 </nav>
             </div>
+
             <div class="p-space-md">
                 <div class="p-3 bg-surface-container-low border border-[#EFE7DD] rounded-xl text-center">
                     <span class="text-[11px] font-bold text-primary uppercase tracking-wider block">Grooming & Estética</span>

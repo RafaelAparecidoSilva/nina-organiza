@@ -3,18 +3,130 @@
 {% block title %}Início - NinaOrganiza{% endblock %}
 
 {% block content %}
-<div class="flex flex-col items-center justify-center py-space-3xl">
-    <div class="text-center">
-        <h1 class="text-[48px] font-bold text-nina-espresso-dark mb-space-md">Bem-vindo ao NinaOrganiza</h1>
-        <p class="text-[20px] text-on-surface-variant mb-space-xl">Ela organiza, você cuida dos pets.</p>
-        <div class="flex gap-space-md justify-center">
-            <a href="{{ url_for('tutor.list_tutores') }}" class="px-space-xl py-space-md bg-primary text-white rounded-xl font-semibold hover:bg-nina-caramel-deep transition-all shadow-md">
-                Ver Tutores
-            </a>
-            <a href="{{ url_for('pet.list_pets') }}" class="px-space-xl py-space-md bg-surface-container-low text-on-surface rounded-xl font-semibold hover:bg-surface-container border border-[#EFE7DD] transition-all">
-                Ver Pets
+<div class="flex flex-col w-full pb-space-3xl">
+
+    <!-- Hero de boas-vindas -->
+    <div class="relative w-full rounded-2xl bg-surface-container-lowest p-space-xl border border-[#EFE7DD] shadow-[0_2px_12px_-2px_rgba(43,30,22,0.04)] overflow-hidden mb-space-xl">
+        <div class="absolute -right-16 -top-16 w-64 h-64 bg-[#faedd9]/50 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-lg relative z-10">
+            <div class="flex items-center gap-space-lg">
+                <div class="w-20 h-20 rounded-full bg-secondary-fixed/50 p-1 shadow-md ring-2 ring-nina-caramel-bright/40 flex items-center justify-center overflow-hidden">
+                    <img alt="Nina" class="w-full h-full object-cover rounded-full" src="{{ url_for('static', filename='img/logo-nina.png') }}" onerror="this.style.display='none'; this.parentNode.innerHTML='<span class=material-symbols-outlined text-[40px] text-primary>pets</span>';">
+                </div>
+                <div class="flex flex-col gap-space-2xs">
+                    <h1 class="text-[32px] font-bold text-nina-espresso-dark tracking-tight">{{ saudacao }}, Nina Organiza! 🐾</h1>
+                    <p class="text-[14px] text-on-surface-variant">{{ data_formatada }}</p>
+                    <p class="text-[13px] text-on-surface-variant mt-1">Aqui está o resumo do seu atelier pet hoje.</p>
+                </div>
+            </div>
+            <div class="bg-functional-sage-light/60 border border-functional-sage/20 rounded-xl p-space-md flex flex-col">
+                <span class="text-[11px] font-bold text-functional-sage uppercase tracking-wider">Lucro do Mês</span>
+                <span class="text-[24px] font-bold text-functional-sage mt-0.5">R$ {{ "%.2f"|format(lucro_mes) }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Atalhos rápidos -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-space-md mb-space-xl">
+        <a href="{{ url_for('tutor.create_tutor') }}" class="group bg-surface-container-lowest rounded-2xl p-space-lg border border-outline-variant/30 shadow-sm hover:shadow-md hover:border-primary/40 transition-all flex flex-col items-center gap-space-sm text-center">
+            <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-[26px]">person_add</span>
+            </div>
+            <span class="text-[14px] font-bold text-nina-espresso-dark">Novo Tutor</span>
+        </a>
+        <a href="{{ url_for('pet.create_pet') }}" class="group bg-surface-container-lowest rounded-2xl p-space-lg border border-outline-variant/30 shadow-sm hover:shadow-md hover:border-primary/40 transition-all flex flex-col items-center gap-space-sm text-center">
+            <div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center text-nina-caramel-deep group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-[26px]">pets</span>
+            </div>
+            <span class="text-[14px] font-bold text-nina-espresso-dark">Novo Pet</span>
+        </a>
+        <a href="{{ url_for('atendimento.create_atendimento') }}" class="group bg-surface-container-lowest rounded-2xl p-space-lg border border-outline-variant/30 shadow-sm hover:shadow-md hover:border-primary/40 transition-all flex flex-col items-center gap-space-sm text-center">
+            <div class="w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center text-tertiary group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-[26px]">content_cut</span>
+            </div>
+            <span class="text-[14px] font-bold text-nina-espresso-dark">Novo Atendimento</span>
+        </a>
+        <a href="{{ url_for('gasto.create_gasto') }}" class="group bg-surface-container-lowest rounded-2xl p-space-lg border border-outline-variant/30 shadow-sm hover:shadow-md hover:border-primary/40 transition-all flex flex-col items-center gap-space-sm text-center">
+            <div class="w-12 h-12 rounded-xl bg-functional-terracotta-light flex items-center justify-center text-functional-terracotta group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-[26px]">account_balance_wallet</span>
+            </div>
+            <span class="text-[14px] font-bold text-nina-espresso-dark">Novo Gasto</span>
+        </a>
+    </div>
+
+    <!-- KPIs -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg mb-space-xl">
+        <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-outline-variant/30 shadow-sm flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Tutores</span>
+                <span class="text-[32px] text-nina-espresso-dark mt-space-2xs font-bold">{{ total_tutores }}</span>
+                <span class="text-[12px] text-on-surface-variant">clientes na carteira</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-[26px]">group</span>
+            </div>
+        </div>
+        <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-outline-variant/30 shadow-sm flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Pets</span>
+                <span class="text-[32px] text-nina-espresso-dark mt-space-2xs font-bold">{{ total_pets }}</span>
+                <span class="text-[12px] text-on-surface-variant">peludos cadastrados</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center text-nina-caramel-deep">
+                <span class="material-symbols-outlined text-[26px]">pets</span>
+            </div>
+        </div>
+        <div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-outline-variant/30 shadow-sm flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Atendimentos no Mês</span>
+                <span class="text-[32px] text-nina-espresso-dark mt-space-2xs font-bold">{{ total_atendimentos_mes }}</span>
+                <span class="text-[12px] text-on-surface-variant">R$ {{ "%.2f"|format(faturamento_mes) }} faturados</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-functional-sage-light flex items-center justify-center text-functional-sage">
+                <span class="material-symbols-outlined text-[26px]">content_cut</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Últimos atendimentos -->
+    <div class="bg-surface-container-lowest rounded-2xl p-space-xl border border-outline-variant/30 shadow-sm">
+        <div class="flex items-center justify-between mb-space-lg">
+            <div class="flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-[22px] text-nina-caramel-bright">history</span>
+                <h2 class="text-[20px] font-bold text-nina-espresso-dark">Últimos Atendimentos</h2>
+            </div>
+            <a href="{{ url_for('atendimento.list_atendimentos') }}" class="text-[12px] text-primary font-semibold hover:underline">Ver todos →</a>
+        </div>
+
+        {% if atendimentos_recentes %}
+        <div class="flex flex-col gap-space-md">
+            {% for att in atendimentos_recentes %}
+            <div class="flex items-center justify-between p-space-md rounded-xl bg-surface-container-low border border-outline-variant/20 hover:border-primary/30 transition-all">
+                <div class="flex items-center gap-space-md">
+                    <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[24px]">{{ 'pets' if att.pet.especie == 'cao' else 'cruelty_free' }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[14px] font-bold text-nina-espresso-dark">{{ att.pet.nome }}</span>
+                        <span class="text-[12px] text-on-surface-variant">{{ att.servico|title }} • {{ att.data_atendimento.strftime('%d/%m/%Y') }}</span>
+                    </div>
+                </div>
+                <span class="text-[16px] font-bold text-functional-sage">R$ {{ "%.2f"|format(att.valor) }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="flex flex-col items-center justify-center py-space-2xl text-center">
+            <div class="w-16 h-16 rounded-full bg-surface-container-low flex items-center justify-center text-outline mb-space-sm">
+                <span class="material-symbols-outlined text-[32px]">event_busy</span>
+            </div>
+            <p class="text-[14px] text-on-surface-variant font-semibold">Nenhum atendimento registrado ainda</p>
+            <p class="text-[12px] text-outline mt-1 mb-space-md">Comece registrando o primeiro serviço do mês.</p>
+            <a href="{{ url_for('atendimento.create_atendimento') }}" class="px-space-md py-2 rounded-xl bg-primary text-white text-[13px] font-semibold hover:bg-nina-caramel-deep transition-all">
+                Registrar Atendimento
             </a>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

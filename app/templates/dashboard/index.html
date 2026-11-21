@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard e Relatórios - NinaOrganiza{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full pb-space-3xl">
+    <!-- Header do Dashboard -->
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pt-space-md mb-space-xl">
+        <div>
+            <div class="inline-flex items-center gap-space-xs px-space-sm py-space-2xs rounded-full bg-secondary-fixed text-nina-espresso-dark text-[12px] mb-space-xs border border-outline-variant/40">
+                <span class="material-symbols-outlined text-[15px] text-nina-caramel-deep" style="font-variation-settings: 'FILL' 1">bar_chart</span>
+                <span class="font-semibold uppercase tracking-wide">VISÃO GERAL • {{ mes_atual }}</span>
+            </div>
+            <h1 class="text-[32px] font-bold text-nina-espresso-dark tracking-tight">Dashboard Financeiro</h1>
+            <p class="text-[14px] text-on-surface-variant mt-space-2xs">Acompanhe o desempenho, lucros e custos do seu negócio pet em tempo real.</p>
+        </div>
+        <div class="flex items-center gap-space-sm">
+            <button onclick="window.print()" class="flex items-center gap-space-xs px-space-lg py-space-sm bg-primary hover:bg-nina-caramel-deep text-white font-semibold text-[14px] rounded-xl shadow-[0_2px_8px_-2px_rgba(217,126,54,0.4)] transition-all">
+                <span class="material-symbols-outlined text-[20px]">print</span>
+                <span>Imprimir Relatório</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Cards de Métricas Principais (4 colunas) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-lg mb-space-xl">
+        <!-- Total de Tutores -->
+        <div class="bg-surface-container-lowest rounded-2xl p-space-lg border border-outline-variant/30 shadow-sm flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Total de Tutores</span>
+                <span class="text-[32px] text-nina-espresso-dark mt-space-2xs font-bold">{{ total_tutores }}</span>
+                <span class="text-[12px] text-on-surface-variant flex items-center gap-1 mt-0.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-functional-sage inline-block"></span> Clientes ativos
+                </span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-[26px]">group</span>
+            </div>
+        </div>
+
+        <!-- Total de Pets -->
+        <div class="bg-surface-container-lowest rounded-2xl p-space-lg border border-outline-variant/30 shadow-sm flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Total de Pets</span>
+                <span class="text-[32px] text-nina-espresso-dark mt-space-2xs font-bold">{{ total_pets }}</span>
+                <span class="text-[12px] text-on-surface-variant flex items-center gap-1 mt-0.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-nina-caramel-bright inline-block"></span> Peludos cadastrados
+                </span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center text-nina-caramel-deep">
+                <span class="material-symbols-outlined text-[26px]">pets</span>
+            </div>
+        </div>
+
+        <!-- Atendimentos no Mês -->
+        <div class="bg-surface-container-lowest rounded-2xl p-space-lg border border-outline-variant/30 shadow-sm flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Atendimentos no Mês</span>
+                <span class="text-[32px] text-nina-espresso-dark mt-space-2xs font-bold">{{ total_atendimentos_mes }}</span>
+                <span class="text-[12px] text-on-surface-variant flex items-center gap-1 mt-0.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-functional-sage inline-block"></span> Serviços realizados
+                </span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center text-tertiary">
+                <span class="material-symbols-outlined text-[26px]">content_cut</span>
+            </div>
+        </div>
+
+        <!-- Faturamento -->
+        <div class="bg-surface-container-lowest rounded-2xl p-space-lg border border-outline-variant/30 shadow-sm flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Faturamento do Mês</span>
+                <span class="text-[28px] text-functional-sage mt-space-2xs font-bold">R$ {{ "%.2f"|format(faturamento_mes) }}</span>
+                <span class="text-[12px] text-on-surface-variant flex items-center gap-1 mt-0.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-functional-sage inline-block"></span> Receita bruta
+                </span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-functional-sage-light flex items-center justify-center text-functional-sage">
+                <span class="material-symbols-outlined text-[26px]">payments</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cards Financeiros Detalhados (3 colunas) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg mb-space-xl">
+        <!-- Total de Gastos -->
+        <div class="bg-gradient-to-br from-functional-terracotta-light to-white rounded-2xl p-space-lg border border-functional-terracotta/20 shadow-sm">
+            <div class="flex items-center justify-between mb-space-sm">
+                <span class="text-[11px] font-bold text-functional-terracotta uppercase tracking-wider">Total de Gastos</span>
+                <span class="material-symbols-outlined text-[20px] text-functional-terracotta">shopping_cart</span>
+            </div>
+            <span class="text-[28px] text-functional-terracotta font-bold">R$ {{ "%.2f"|format(total_gastos_mes) }}</span>
+            <p class="text-[12px] text-on-surface-variant mt-1">Insumos, equipamentos e custos operacionais</p>
+        </div>
+
+        <!-- Lucro Líquido -->
+        <div class="bg-gradient-to-br from-functional-sage-light to-white rounded-2xl p-space-lg border border-functional-sage/20 shadow-sm">
+            <div class="flex items-center justify-between mb-space-sm">
+                <span class="text-[11px] font-bold text-functional-sage uppercase tracking-wider">Lucro Líquido</span>
+                <span class="material-symbols-outlined text-[20px] text-functional-sage">trending_up</span>
+            </div>
+            <span class="text-[28px] text-functional-sage font-bold">R$ {{ "%.2f"|format(lucro_liquido) }}</span>
+            <p class="text-[12px] text-on-surface-variant mt-1">
+                {% if lucro_liquido >= 0 %}
+                <span class="text-functional-sage font-bold">↑</span> Resultado positivo
+                {% else %}
+                <span class="text-functional-terracotta font-bold">↓</span> Atenção: prejuízo
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Ticket Médio -->
+        <div class="bg-gradient-to-br from-primary-fixed to-white rounded-2xl p-space-lg border border-primary/20 shadow-sm">
+            <div class="flex items-center justify-between mb-space-sm">
+                <span class="text-[11px] font-bold text-primary uppercase tracking-wider">Ticket Médio</span>
+                <span class="material-symbols-outlined text-[20px] text-primary">calculate</span>
+            </div>
+            <span class="text-[28px] text-primary font-bold">R$ {{ "%.2f"|format(ticket_medio) }}</span>
+            <p class="text-[12px] text-on-surface-variant mt-1">Média por atendimento realizado</p>
+        </div>
+    </div>
+
+    <!-- Seção Principal: Duas Colunas -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-space-xl mb-space-xl">
+
+        <!-- Coluna Esquerda: Atendimentos Recentes -->
+        <div class="bg-surface-container-lowest rounded-2xl p-space-xl border border-outline-variant/30 shadow-sm">
+            <div class="flex items-center justify-between mb-space-lg">
+                <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[22px] text-nina-caramel-bright">history</span>
+                    <h2 class="text-[20px] font-bold text-nina-espresso-dark">Atendimentos Recentes</h2>
+                </div>
+                <a href="{{ url_for('atendimento.list_atendimentos') }}" class="text-[12px] text-primary font-semibold hover:underline">Ver todos →</a>
+            </div>
+
+            {% if atendimentos_recentes %}
+            <div class="flex flex-col gap-space-md">
+                {% for att in atendimentos_recentes %}
+                <div class="flex items-center justify-between p-space-md rounded-xl bg-surface-container-low border border-outline-variant/20 hover:border-primary/30 transition-all">
+                    <div class="flex items-center gap-space-md">
+                        <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined text-[24px]">{{ 'pets' if att.pet.especie == 'cao' else 'cruelty_free' }}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[14px] font-bold text-nina-espresso-dark">{{ att.pet.nome }}</span>
+                            <span class="text-[12px] text-on-surface-variant">{{ att.servico|title }} • {{ att.data_atendimento.strftime('%d/%m') }}</span>
+                        </div>
+                    </div>
+                    <span class="text-[16px] font-bold text-functional-sage">R$ {{ "%.2f"|format(att.valor) }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="flex flex-col items-center justify-center py-space-2xl text-center">
+                <span class="material-symbols-outlined text-[48px] text-outline mb-space-sm">event_busy</span>
+                <p class="text-[14px] text-on-surface-variant font-semibold">Nenhum atendimento registrado</p>
+                <p class="text-[12px] text-outline mt-1">Comece registrando seu primeiro serviço</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Coluna Direita: Pets Mais Atendidos -->
+        <div class="bg-surface-container-lowest rounded-2xl p-space-xl border border-outline-variant/30 shadow-sm">
+            <div class="flex items-center justify-between mb-space-lg">
+                <div class="flex items-center gap-space-xs">
+                    <span class="material-symbols-outlined text-[22px] text-nina-caramel-bright">emoji_events</span>
+                    <h2 class="text-[20px] font-bold text-nina-espresso-dark">Pets Mais Atendidos</h2>
+                </div>
+            </div>
+
+            {% if pets_mais_atendidos %}
+            <div class="flex flex-col gap-space-md">
+                {% for pet_nome, total in pets_mais_atendidos %}
+                <div class="flex items-center justify-between p-space-md rounded-xl bg-surface-container-low border border-outline-variant/20">
+                    <div class="flex items-center gap-space-md">
+                        <div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-bold text-[14px]">
+                            {{ loop.index }}
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[14px] font-bold text-nina-espresso-dark">{{ pet_nome }}</span>
+                            <span class="text-[12px] text-on-surface-variant">Cliente fiel</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-space-xs">
+                        <span class="text-[16px] font-bold text-primary">{{ total }}</span>
+                        <span class="text-[12px] text-on-surface-variant">atendimentos</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="flex flex-col items-center justify-center py-space-2xl text-center">
+                <span class="material-symbols-outlined text-[48px] text-outline mb-space-sm">pets</span>
+                <p class="text-[14px] text-on-surface-variant font-semibold">Sem dados ainda</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Resumo por Categoria de Gasto -->
+    {% if categorias_gasto %}
+    <div class="mt-space-xl bg-surface-container-lowest rounded-2xl p-space-xl border border-outline-variant/30 shadow-sm">
+        <div class="flex items-center justify-between mb-space-lg">
+            <div class="flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-[22px] text-nina-caramel-bright">pie_chart</span>
+                <h2 class="text-[20px] font-bold text-nina-espresso-dark">Gastos por Categoria</h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
+            {% for categoria, valor in categorias_gasto.items() %}
+            <div class="p-space-md rounded-xl bg-surface-container-low border border-outline-variant/20">
+                <div class="flex items-center justify-between mb-space-xs">
+                    <span class="text-[12px] font-bold text-outline uppercase tracking-wider">{{ categoria|title }}</span>
+                    <span class="material-symbols-outlined text-[18px] text-primary">shopping_bag</span>
+                </div>
+                <span class="text-[24px] font-bold text-nina-espresso-dark">R$ {{ "%.2f"|format(valor) }}</span>
+                <div class="w-full h-2 bg-surface-container-low rounded-full mt-space-xs overflow-hidden">
+                    <div class="h-full bg-primary rounded-full" style="width: {{ (valor / total_gastos_mes * 100)|round }}%"></div>
+                </div>
+                <span class="text-[11px] text-on-surface-variant mt-1 block">{{ (valor / total_gastos_mes * 100)|round }}% do total</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
